@@ -30,8 +30,8 @@ class Rocket(pygame.sprite.Sprite):
         elif self.rect.x > screen.get_width() - width:
             self.rect.move_ip(-10, 0)
                   
-    def shoot(self):
-        pass
+##    def shoot(self):
+##        pass
     
     def render(self, screen):
         self.rocket_plain.draw(screen)
@@ -54,19 +54,17 @@ class World():
 
 
 class Doom():
-    def __init__(self, asteroid_num, screen, asteroid_size):
+    def __init__(self, asteroid_num, screen, asteroid_size, asteroid_minmax):
         self.asteroids = []
         
-        for n in range(0, asteroid_num):
+        for index in range(0, asteroid_num):
             self.asteroids.append(Asteroid(asteroid_image, asteroid_size, screen))
-        
+     
         self.asteroid_plain = pygame.sprite.RenderPlain(self.asteroids)
         
     def collided(self, rocket_rect):
         list = self.asteroids
         return Asteroid.collision(list, rocket_rect)
-
-
         
     def render(self, asteroid_speed, screen, asteroid_size):
         for index in self.asteroids:
@@ -75,8 +73,7 @@ class Doom():
         self.asteroid_plain.draw(screen)
     
 
-
-#Settings
+#View settings
 screen_x = 700
 screen_y = 700
 
@@ -93,13 +90,15 @@ rocket_image = 'cohete_on_wf.png'
 #Asteroid properties
 asteroid_num = 4
 asteroid_speed = 10
-asteroid_size = randint(25, 100)     #width = height
+asteroid_minmax = [25, 100]
+asteroid_size = randint(asteroid_minmax[0], asteroid_minmax[1])     #width = height
 asteroid_image = '01murocrep512.jpg'
 
-#Background star properties
+#Stars properties
 stars_num = 10
 stars_speed = 15
-stars_size = randint(20, 70)         #width = height
+stars_minmax = [20, 70]
+stars_size = randint(stars_minmax[0], stars_minmax[1])         #width = height
 stars_image = 'Blue Star.png'
 
 background_image = 'chikyuu_16_edge.png'
@@ -110,13 +109,12 @@ pygame.init()
 
 rocket = Rocket(rocket_spawn_x, rocket_spawn_y, rocket_width, rocket_height)  #creating the rocket
 world = World(stars_num, screen, stars_size)
-doom = Doom(asteroid_num, screen, asteroid_size)
+doom = Doom(asteroid_num, screen, asteroid_size, asteroid_minmax)
 
 clock = pygame.time.Clock()
 
 #Background
 background = pygame.transform.scale(pygame.image.load(background_image), (screen_x, screen_y)).convert()
-
 
 finish = False
 

@@ -15,10 +15,10 @@ class FallingObject(pygame.sprite.Sprite):
         self.rect.move_ip(0, distance)
         if self.rect.y > screen.get_height():
             self.reset(screen, size)
-    
-    def reset(self, screen, size):
+
+    def reset(self, screen, size, minmax):
         self.rect.x = randint(0, screen.get_width() - size)
         self.rect.y = 0
         self.rect.topleft = (self.rect.x, self.rect.y)
-
-            
+        
+        

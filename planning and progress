@@ -1,0 +1,15 @@
+Progress
+
+[X] rocket sprite
+[X] basic background
+[X] rocket movement
+[X] rocket stays on screen
+[X] FallingObject class
+[X] basic asteroids
+[X] basic stars
+[X] asteroid/rocket collision
+
+[-] random sized FallingObjects
+[-] random speed FallingObjects
+[-] FallingObjects dont touch each other
+[-] continuous rain of FallingObjects

@@ -11,8 +11,7 @@ class Asteroid(pygame.sprite.Sprite):
         
     def reset(self, screen, size):
         FallingObject.reset(self, screen, size)
-    
-    
+        
     def collision(list, rocket_rect):
         for index in list:
             if index.rect.colliderect(rocket_rect):
