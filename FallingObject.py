@@ -20,3 +20,5 @@ class FallingObject(pygame.sprite.Sprite):
         self.rect.x = randint(0, screen.get_width() - size)
         self.rect.y = 0
         self.rect.topleft = (self.rect.x, self.rect.y)
+
+            

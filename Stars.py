@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from FallingObject import FallingObject
 
-class Asteroid(pygame.sprite.Sprite):    
+class Stars(pygame.sprite.Sprite):    
     def __init__(self, image, size, screen):
         FallingObject.__init__(self, image, size, screen)
         
@@ -11,9 +11,3 @@ class Asteroid(pygame.sprite.Sprite):
         
     def reset(self, screen, size):
         FallingObject.reset(self, screen, size)
-    
-    
-    def collision(list, rocket_rect):
-        for index in list:
-            if index.rect.colliderect(rocket_rect):
-                return True
