@@ -4,10 +4,9 @@ import time
 from pygame.locals import *
 from random import randint
 
-
 from Asteroid import Asteroid
 from Stars import Stars
-
+from Field import Field
 
 
 class Rocket(pygame.sprite.Sprite):  
@@ -37,28 +36,14 @@ class Rocket(pygame.sprite.Sprite):
         self.rocket_plain.draw(screen)
 
 
-class World():
-    def __init__(self, stars_num, screen, stars_size):
-        self.stars = []
-        
-        for n in range(0, stars_num):
-            self.stars.append(Stars(stars_image, stars_size, screen))
-            
-        self.stars_plain = pygame.sprite.RenderPlain(self.stars)
-        
-    def render(self, stars_speed, screen, stars_size):
-        for index in self.stars:
-            index.falling(stars_speed, screen, stars_size)
-            
-        self.stars_plain.draw(screen)
 
 
 class Doom():
-    def __init__(self, asteroid_num, screen, asteroid_size, asteroid_minmax):
+    def __init__(self, asteroid_num, screen, asteroid_minmax):
         self.asteroids = []
         
         for index in range(0, asteroid_num):
-            self.asteroids.append(Asteroid(asteroid_image, asteroid_size, screen))
+            self.asteroids.append(Asteroid(asteroid_image, asteroid_minmax, screen))
      
         self.asteroid_plain = pygame.sprite.RenderPlain(self.asteroids)
         
@@ -66,11 +51,12 @@ class Doom():
         list = self.asteroids
         return Asteroid.collision(list, rocket_rect)
         
-    def render(self, asteroid_speed, screen, asteroid_size):
+    def render(self, asteroid_speed, screen):
         for index in self.asteroids:
-            index.falling(asteroid_speed, screen, asteroid_size)
+            index.falling(asteroid_speed, screen)
             
         self.asteroid_plain.draw(screen)
+        
     
 
 #View settings
@@ -90,16 +76,15 @@ rocket_image = 'cohete_on_wf.png'
 #Asteroid properties
 asteroid_num = 4
 asteroid_speed = 10
-asteroid_minmax = [25, 100]
-asteroid_size = randint(asteroid_minmax[0], asteroid_minmax[1])     #width = height
+##asteroid_minmax = [25, 100]
+##asteroid_size = randint(asteroid_minmax[0], asteroid_minmax[1])     #width = height
 asteroid_image = '01murocrep512.jpg'
 
 #Stars properties
 stars_num = 10
 stars_speed = 15
-stars_minmax = [20, 70]
-stars_size = randint(stars_minmax[0], stars_minmax[1])         #width = height
-stars_image = 'Blue Star.png'
+##stars_minmax = [20, 70]
+##stars_size = randint(stars_minmax[0], stars_minmax[1])         #width = height
 
 background_image = 'chikyuu_16_edge.png'
                                  
@@ -108,8 +93,8 @@ pygame.init()
 
 
 rocket = Rocket(rocket_spawn_x, rocket_spawn_y, rocket_width, rocket_height)  #creating the rocket
-world = World(stars_num, screen, stars_size)
-doom = Doom(asteroid_num, screen, asteroid_size, asteroid_minmax)
+world = Field(14, screen)
+##doom = Doom(asteroid_num, screen, asteroid_minmax)
 
 clock = pygame.time.Clock()
 
@@ -140,15 +125,17 @@ while not finish:
     
     #Render frame
     rocket.render(screen)
-    world.render(stars_speed, screen, stars_size)
-    doom.render(asteroid_speed, screen, asteroid_size)
+    world.render(stars_speed, screen)
+##    doom.render(asteroid_speed, screen)
+
     
     #Update display
     pygame.display.update()
     
     #Collisions
-    if doom.collided(rocket.rect):
+    if world.collided(rocket.rect):
         finish = True
+        print("collided")
         time.sleep(2)
         sys.exit()
         

@@ -2,17 +2,11 @@ import pygame
 from pygame.locals import *
 from FallingObject import FallingObject
 
-class Asteroid(pygame.sprite.Sprite):    
-    def __init__(self, image, size, screen):
-        FallingObject.__init__(self, image, size, screen)
-        
-    def falling(self, distance, screen, size):
-        FallingObject.fallmove(self, distance, screen, size)
-        
-    def reset(self, screen, size):
-        FallingObject.reset(self, screen, size)
-        
-    def collision(list, rocket_rect):
-        for index in list:
-            if index.rect.colliderect(rocket_rect):
-                return True
+class Asteroid(FallingObject):    
+    def __init__(self, minmax, screen):
+        FallingObject.__init__(self, '01murocrep512.jpg', minmax, screen)
+ 
+    def collided(self, rocket_rect):
+        if self.rect.colliderect(rocket_rect):
+            return True
+        return FallingObject.collided(self, rocket_rect)
