@@ -1,34 +1,46 @@
 import pygame
-from random import randint
+from random import *
 from pygame.locals import *
 from Asteroid import Asteroid
 from Stars import Stars
 
 class FieldObjectFactory():
-    def create_object(self, typ, screen, object_minmax):
+    def create_object(self, typ, object_minmax, screen):
         targetclass = typ.capitalize()
+        
         if targetclass == "Stars":
             return Stars(object_minmax, screen)
+        
         if targetclass == "Asteroid":
             return Asteroid(object_minmax, screen)
     
 class Field():
     def __init__(self, object_num, screen):
         self.objects = []
+        self.object_instances = []
         factory = FieldObjectFactory()
         
         for n in range(0, object_num):
             choice = randint(0, 1)
-            if choice == 1:
-                self.objects.append(factory.create_object("Stars", screen, [20, 70]))
-            else:
-                self.objects.append(factory.create_object("Asteroid", screen, [25, 100]))
             
+            if choice == 0:
+                if self.object_instances.count("Asteroid") < 4:
+                    self.objects.append(factory.create_object("Asteroid", [25, 100], screen))
+                    self.object_instances.append("Asteroid")
+                else:
+                    self.objects.append(factory.create_object("Stars", [20, 70], screen))
+                    self.object_instances.append("Star")
+
+            elif choice == 1:
+                self.objects.append(factory.create_object("Stars", [20, 70], screen))
+                self.object_instances.append("Star")
+  
         self.field_plain = pygame.sprite.RenderPlain(self.objects)
         
-    def render(self, object_speed, screen):
+    def render(self, screen):
         for index in self.objects:
-            index.fallmove(object_speed, screen)
+            speed = randrange(10, 25, 5)
+            index.fallmove(speed, screen)
             
         self.field_plain.draw(screen)
     

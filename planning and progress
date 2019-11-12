@@ -8,8 +8,8 @@ Progress
 [X] basic asteroids
 [X] basic stars
 [X] asteroid/rocket collision
+[X] random sized FallingObjects
+[X] random speed FallingObjects
 
-[-] random sized FallingObjects
-[-] random speed FallingObjects
 [-] FallingObjects dont touch each other
 [-] continuous rain of FallingObjects
