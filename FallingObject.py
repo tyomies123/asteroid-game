@@ -1,28 +1,30 @@
 import pygame
 from pygame.locals import *
-from random import randint
+from random import *
 
 class FallingObject(pygame.sprite.Sprite):
-    def __init__(self, object_image, minmax, screen):
+    def __init__(self, object_image, minmax, speed, screen):
         pygame.sprite.Sprite.__init__(self)
         self.minmax = minmax
-        self.imageFile = object_image
-        self.object_image = pygame.image.load(self.imageFile)
-        self.reset(screen)
+        self.speed = speed
+        self.screen = screen
+        self.image_file = object_image
+        self.object_image = pygame.image.load(self.image_file)
+        self.reset()
         
-    def fallmove(self, speed, screen):
-        self.distance = speed
-        self.rect.move_ip(0, self.distance)
-        if self.rect.y > screen.get_height():
-            self.reset(screen)
+    def fallmove(self):
+        self.rect.move_ip(0, self.speed)
+        if self.rect.y > self.screen.get_height():
+            self.reset()
+            self.speed = randrange(20, 51, 5)
 
-    def reset(self, screen):
+    def reset(self):
         size = randint(self.minmax[0], self.minmax[1])
         
         self.image = pygame.transform.scale(self.object_image, (size, size))
         self.rect = self.image.get_rect()
 
-        self.rect.x = randint(0, screen.get_width() - size)
+        self.rect.x = randint(0, self.screen.get_width() - size)
         self.rect.y = 0 - size
         self.rect.topleft = (self.rect.x, self.rect.y)
         

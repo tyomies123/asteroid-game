@@ -10,6 +10,7 @@ Progress
 [X] asteroid/rocket collision
 [X] random sized FallingObjects
 [X] random speed FallingObjects
+[X] continuous rain of FallingObjects
 
-[-] FallingObjects dont touch each other
-[-] continuous rain of FallingObjects
+[-] rocket hitpoints
+[-] invincibility frames
