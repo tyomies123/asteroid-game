@@ -11,6 +11,7 @@ Progress
 [X] random sized FallingObjects
 [X] random speed FallingObjects
 [X] continuous rain of FallingObjects
+[X] rocket hitpoints
 
-[-] rocket hitpoints
-[-] invincibility frames
+
+[-] status box

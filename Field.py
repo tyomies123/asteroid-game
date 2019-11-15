@@ -1,4 +1,5 @@
 import pygame
+import time
 from random import *
 from pygame.locals import *
 from Asteroid import Asteroid
@@ -46,7 +47,8 @@ class Field():
             
         self.field_plain.draw(self.screen)
     
-    def collided(self, rocket_rect):
+    def collision_check(self, rocket):
         for object in self.objects:
-            if object.collided(rocket_rect):
-                return True
+            if object.collided(rocket):
+                object.reset()
+                
