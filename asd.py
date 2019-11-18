@@ -1,6 +1,7 @@
 import pygame
 import sys
 import time
+
 from pygame.locals import *
 from random import *
 
@@ -9,7 +10,6 @@ from Asteroid import Asteroid
 from Star import Star
 from Field import Field
 
-    
 
 #View settings
 screen_x = 700
@@ -27,7 +27,7 @@ rocket_spawn_y = screen_y - rocket_height
 rocket_hp = 3
 
 #NPC settings
-background_image = 'chikyuu_16_edge.png'
+background_image = 'background.png'
 object_num = 10
 
 
@@ -41,6 +41,7 @@ world = Field(object_num, screen)
 #Background
 background = pygame.transform.scale(pygame.image.load(background_image), (screen_x, screen_y)).convert()
 
+#Main loop
 clock = pygame.time.Clock()
 ticks = 20
 finish = False
@@ -63,6 +64,9 @@ while not finish:
   
     elif command[K_RIGHT]:
         rocket.movement(10, rocket_width)    #Move right
+        
+    if command[K_SPACE]:
+        rocket.shoot()                       #Shoot
           
     #Render frame
     world.render()
@@ -71,7 +75,7 @@ while not finish:
     #Update display
     pygame.display.update()
     
-    #Collision
+    #Collision check
     world.collision_check(rocket)
     
     #Game speed

@@ -11,10 +11,12 @@ Progress
 [X] random sized FallingObjects
 [X] random speed FallingObjects
 [X] continuous rain of FallingObjects
-[X] rocket hitpoints
+[X] rocket hp
 
-
-[-] cycling edge ?
 [-] shoot
+[-] hp pickup
+
+
 [-] power up object
 [-] advanced enemy object
+[-] score
