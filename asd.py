@@ -8,6 +8,7 @@ from random import *
 from Rocket import Rocket
 from Asteroid import Asteroid
 from Star import Star
+from RocketProjectile import RocketProjectile
 from Field import Field
 
 
@@ -22,9 +23,14 @@ screen = pygame.display.get_surface()
 rocket_width = 40
 rocket_height = 70
 rocket_life = 3
-rocket_spawn_x = screen_x / 2 - rocket_width / 2
-rocket_spawn_y = screen_y - rocket_height
+rocket_spawn_x = screen.get_width() / 2 - rocket_width / 2
+rocket_spawn_y = screen.get_height() - rocket_height
 rocket_hp = 3
+
+#Rocket projectile
+##projectile_width = 3
+##projectile_height = 70
+##projectile_speed = 30
 
 #NPC settings
 background_image = 'background.png'
@@ -45,6 +51,10 @@ background = pygame.transform.scale(pygame.image.load(background_image), (screen
 clock = pygame.time.Clock()
 ticks = 20
 finish = False
+shoot = False
+projectile_list = []
+
+
 
 while not finish:
     
@@ -60,16 +70,20 @@ while not finish:
     command = pygame.key.get_pressed()
         
     if command[K_LEFT]:
-        rocket.movement(-10, rocket_width)   #Move left
+        rocket.movement(-10)      #Move left
   
     elif command[K_RIGHT]:
-        rocket.movement(10, rocket_width)    #Move right
+        rocket.movement(10)       #Move right
         
-    if command[K_SPACE]:
-        rocket.shoot()                       #Shoot
+    if command[K_UP]:
+        shoot = True
+        projectile_list.append(rocket.shoot())    #Create projectile
           
     #Render frame
     world.render()
+    if shoot:
+        for projectile in projectile_list:
+            rocket.projectile_render(projectile)
     rocket.render()
 
     #Update display

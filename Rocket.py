@@ -3,8 +3,7 @@ import sys
 import time
 
 from pygame.locals import *
-from Projectile import Projectile
-
+from RocketProjectile import RocketProjectile
 
 class Rocket(pygame.sprite.Sprite):  
     def __init__(self, start_x, start_y, width, height, hp, screen):
@@ -13,20 +12,25 @@ class Rocket(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = start_x
         self.rect.y = start_y
+        
+        self.start_x = start_x
+        self.start_y = start_y
+        self.width = width
+        self.height = height
         self.hp = hp
 ##        self.base = pygame.Rect(start_x, start_y - height, width, height)
         self.rocket_plain = pygame.sprite.RenderPlain(self)
         
         self.screen = screen
     
-    def movement(self, distance, width):
+    def movement(self, distance):
         self.rect.move_ip(distance, 0)
         
         #Prevent the rocket from going offscreen
         if self.rect.x < 0:
             self.rect.move_ip(10, 0)
             
-        elif self.rect.x > self.screen.get_width() - width:
+        elif self.rect.x > self.screen.get_width() - self.width:
             self.rect.move_ip(-10, 0)
         
     def hit(self):
@@ -38,9 +42,13 @@ class Rocket(pygame.sprite.Sprite):
             sys.exit()
             
     def shoot(self):
-        pass
+        return RocketProjectile(5, 50, 30, self.screen, self.rect.midtop[0], self.height)
             
     def render(self):
         self.rocket_plain.draw(self.screen)
+    
+    def projectile_render(self, projectile):
+        projectile.render()
+
         
     

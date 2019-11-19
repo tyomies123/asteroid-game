@@ -5,7 +5,6 @@ from random import *
 from pygame.locals import *
 from Asteroid import Asteroid
 from Star import Star
-from Projectile import Projectile
 
 class FieldObjectFactory():
     def create_FallingObject(self, typ, object_minmax, object_speed, screen):
@@ -16,8 +15,6 @@ class FieldObjectFactory():
         
         if targetclass == "Asteroid":
             return Asteroid(object_minmax, object_speed, screen)
-        
-##    def create_AttackObject(...)        
     
 class Field():
     def __init__(self, object_num, screen):
