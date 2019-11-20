@@ -12,11 +12,11 @@ Progress
 [X] random speed FallingObjects
 [X] continuous rain of FallingObjects
 [X] rocket hp
-
-[-] shoot
-[-] hp pickup
+[X] shooting projectiles
+[X] destroying asteroids
 
 
 [-] power up object
 [-] advanced enemy object
 [-] score
+[-] player customization

@@ -6,9 +6,9 @@ from pygame.locals import *
 from random import *
 
 from Rocket import Rocket
-from Asteroid import Asteroid
-from Star import Star
-from RocketProjectile import RocketProjectile
+##from Asteroid import Asteroid
+##from Star import Star
+##from RocketProjectile import RocketProjectile
 from Field import Field
 
 
@@ -51,46 +51,47 @@ background = pygame.transform.scale(pygame.image.load(background_image), (screen
 clock = pygame.time.Clock()
 ticks = 20
 finish = False
-shoot = False
 projectile_list = []
-
 
 
 while not finish:
     
-    #Exit
+    #Commands and events
+    move_command = pygame.key.get_pressed()
+    
     for event in pygame.event.get():
+        
+        #Exit
         if event.type == QUIT:
             finish = True
             sys.exit()
-
-    screen.blit(background, (0, 0))
+            
+        if event.type == KEYDOWN:
+            if event.key == K_SPACE:
+                projectile_list.append(rocket.shoot())    #Create projectile
+                
     
-    #Commands     
-    command = pygame.key.get_pressed()
-        
-    if command[K_LEFT]:
-        rocket.movement(-10)      #Move left
+    if move_command[K_LEFT]:
+        rocket.movement(-10)    #Move left
   
-    elif command[K_RIGHT]:
-        rocket.movement(10)       #Move right
-        
-    if command[K_UP]:
-        shoot = True
-        projectile_list.append(rocket.shoot())    #Create projectile
-          
+    if move_command[K_RIGHT]:
+        rocket.movement(10)     #Move right
+    
+    screen.blit(background, (0, 0))    
+             
     #Render frame
     world.render()
-    if shoot:
-        for projectile in projectile_list:
-            rocket.projectile_render(projectile)
+    for projectile in projectile_list:
+        projectile.render()
+        if world.projectile_collision_check(projectile):
+            projectile_list.remove(projectile)
     rocket.render()
 
     #Update display
     pygame.display.update()
     
     #Collision check
-    world.collision_check(rocket)
+    world.rocket_collision_check(rocket)
     
     #Game speed
     clock.tick(ticks)

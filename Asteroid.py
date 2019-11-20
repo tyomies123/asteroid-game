@@ -14,8 +14,13 @@ class Asteroid(FallingObject):
             self.reset()
             self.speed = randrange(15, 31, 5)
             
-    def collided(self, rocket):
+    def rocket_collided(self, rocket):
         if self.rect.colliderect(rocket.rect):
             rocket.hit()
             return True
-        return FallingObject.collided(self, rocket)
+        return FallingObject.rocket_collided(self, rocket)
+    
+    def projectile_collided(self, projectile):
+        if self.rect.colliderect(projectile.rect):
+            return True
+        return FallingObject.projectile_collided(self, projectile)

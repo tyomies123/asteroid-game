@@ -47,8 +47,6 @@ class Rocket(pygame.sprite.Sprite):
     def render(self):
         self.rocket_plain.draw(self.screen)
     
-    def projectile_render(self, projectile):
-        projectile.render()
 
         
     

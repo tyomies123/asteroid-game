@@ -48,8 +48,13 @@ class Field():
             
         self.field_plain.draw(self.screen)
     
-    def collision_check(self, rocket):
+    def rocket_collision_check(self, rocket):
         for object in self.objects:
-            if object.collided(rocket):
+            if object.rocket_collided(rocket):
                 object.reset()
                 
+    def projectile_collision_check(self, projectile):
+        for object in self.objects:
+            if object.projectile_collided(projectile):
+                object.reset()
+                return True
