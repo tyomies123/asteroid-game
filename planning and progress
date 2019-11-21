@@ -14,9 +14,17 @@ Progress
 [X] rocket hp
 [X] shooting projectiles
 [X] destroying asteroids
+[X] power up object
 
+[-] extra hp
 
-[-] power up object
+[-] more power ups
+	- rapid fire
+	- shield?
+	- multiple projectiles
 [-] advanced enemy object
+	- flying saucer
+	- homing enemy
 [-] score
+[-] bonus score object
 [-] player customization

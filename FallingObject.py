@@ -9,8 +9,10 @@ class FallingObject(pygame.sprite.Sprite):
         self.minmax = minmax
         self.speed = speed
         self.screen = screen
+        
         self.image_file = object_image
         self.object_image = pygame.image.load(self.image_file)
+        
         self.reset()
         
     def fallmove(self):

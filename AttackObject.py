@@ -24,9 +24,6 @@ class AttackObject(pygame.sprite.Sprite):
         self.rect.x = self.owner_x - (self.width / 2)
         self.rect.y = self.screen.get_height() - self.owner_y
 
-    def render(self):        
+    def render(self):
         self.rect.move_ip(0, 0 - self.speed)
         self.proj_plain.draw(self.screen)
-
-    def hit(self):
-        pass

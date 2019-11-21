@@ -6,9 +6,6 @@ from pygame.locals import *
 from random import *
 
 from Rocket import Rocket
-##from Asteroid import Asteroid
-##from Star import Star
-##from RocketProjectile import RocketProjectile
 from Field import Field
 
 
@@ -27,11 +24,6 @@ rocket_spawn_x = screen.get_width() / 2 - rocket_width / 2
 rocket_spawn_y = screen.get_height() - rocket_height
 rocket_hp = 3
 
-#Rocket projectile
-##projectile_width = 3
-##projectile_height = 70
-##projectile_speed = 30
-
 #NPC settings
 background_image = 'background.png'
 object_num = 10
@@ -47,12 +39,12 @@ world = Field(object_num, screen)
 #Background
 background = pygame.transform.scale(pygame.image.load(background_image), (screen_x, screen_y)).convert()
 
-#Main loop
+#Main loop and variables
 clock = pygame.time.Clock()
 ticks = 20
 finish = False
 projectile_list = []
-
+score = 0
 
 while not finish:
     
@@ -65,10 +57,11 @@ while not finish:
         if event.type == QUIT:
             finish = True
             sys.exit()
-            
+        
+        #Create projectile
         if event.type == KEYDOWN:
             if event.key == K_SPACE:
-                projectile_list.append(rocket.shoot())    #Create projectile
+                projectile_list.append(rocket.shoot())
                 
     
     if move_command[K_LEFT]:
@@ -85,6 +78,8 @@ while not finish:
         projectile.render()
         if world.projectile_collision_check(projectile):
             projectile_list.remove(projectile)
+            score = score + 1
+            print("Score: ", score)
     rocket.render()
 
     #Update display

@@ -35,9 +35,11 @@ class Rocket(pygame.sprite.Sprite):
         
     def hit(self):
         self.hp = self.hp - 1
+        print("Hit! HP left: ", self.hp)
         time.sleep(1)
         
         if self.hp <= 0:
+            print("Game Over!")
             time.sleep(2)
             sys.exit()
             
