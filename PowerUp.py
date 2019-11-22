@@ -20,7 +20,6 @@ class PowerUp(pygame.sprite.Sprite):
     def start(self):
         self.image = pygame.transform.scale(self.powerup_image, (self.size, self.size))
         self.rect = self.image.get_rect()
-        self.powerup_plain = pygame.sprite.RenderPlain(self)
         
         self.rect.x = randint(0, self.screen.get_width() - self.size)
         self.rect.y = 0 - self.size
