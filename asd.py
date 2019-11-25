@@ -19,7 +19,6 @@ screen = pygame.display.get_surface()
 #Rocket settings
 rocket_width = 40
 rocket_height = 70
-rocket_life = 3
 rocket_spawn_x = screen.get_width() / 2 - rocket_width / 2
 rocket_spawn_y = screen.get_height() - rocket_height
 rocket_hp = 3
@@ -33,7 +32,7 @@ pygame.init()
 
 
 #Creating objects
-rocket = Rocket(rocket_spawn_x, rocket_spawn_y, rocket_width, rocket_height, rocket_life, screen)  #creating the rocket
+rocket = Rocket(rocket_spawn_x, rocket_spawn_y, rocket_width, rocket_height, rocket_hp, screen)
 world = Field(object_num, screen)
 
 #Background
@@ -41,7 +40,6 @@ background = pygame.transform.scale(pygame.image.load(background_image), (screen
 
 #Main loop and variables
 clock = pygame.time.Clock()
-ticks = 20
 finish = False
 projectile_list = []
 score = 0
@@ -60,7 +58,7 @@ while not finish:
         
         #Create projectile
         if event.type == KEYDOWN:
-            if event.key == K_SPACE:
+            if event.key == K_UP or event.key == K_SPACE:
                 projectile_list.append(rocket.shoot())
                 
     
@@ -76,17 +74,22 @@ while not finish:
     world.render()
     for projectile in projectile_list:
         projectile.render()
+        
         if world.projectile_collision_check(projectile):
             projectile_list.remove(projectile)
             score = score + 1
             print("Score: ", score)
+            
     rocket.render()
 
     #Update display
     pygame.display.update()
     
-    #Collision check
+    #Collision checks
     world.rocket_collision_check(rocket)
+    world.powerup_collision_check(rocket)
     
     #Game speed
-    clock.tick(ticks)
+    clock.tick(20)
+
+##End

@@ -4,6 +4,7 @@ import time
 
 from pygame.locals import *
 from RocketProjectile import RocketProjectile
+from FallingObject import FallingObject
 
 class Rocket(pygame.sprite.Sprite):  
     def __init__(self, start_x, start_y, width, height, hp, screen):
@@ -13,12 +14,10 @@ class Rocket(pygame.sprite.Sprite):
         self.rect.x = start_x
         self.rect.y = start_y
         
-        self.start_x = start_x
-        self.start_y = start_y
         self.width = width
         self.height = height
         self.hp = hp
-##        self.base = pygame.Rect(start_x, start_y - height, width, height)
+        
         self.rocket_plain = pygame.sprite.RenderPlain(self)
         
         self.screen = screen
@@ -45,10 +44,22 @@ class Rocket(pygame.sprite.Sprite):
             
     def shoot(self):
         return RocketProjectile(5, 50, 30, self.screen, self.rect.midtop[0], self.height)
+    
+    def powerup_pickup(self, powerup):
+        #Check which powerup type was picked up
+        if powerup == "ExtraHealth":
+            if self.hp == 6:
+                print("Max HP: 6")
+                time.sleep(0.33)
+            else:
+                self.hp = self.hp + 1
+                print("+1 HP! HP left: ", self.hp)
+                time.sleep(0.33)
+            
             
     def render(self):
         self.rocket_plain.draw(self.screen)
     
 
         
-    
+##End

@@ -3,25 +3,31 @@ import time
 
 from random import *
 from pygame.locals import *
+
 from Asteroid import Asteroid
 from Star import Star
+
+from ExtraHealth import ExtraHealth
+from SlowTime import SlowTime
+
 from Dice import Dice
 
 class FieldObjectFactory():
     def create_FallingObject(self, typ, object_minmax, object_speed, screen):
-        targetclass = typ.capitalize()
         
-        if targetclass == "Star":
+        if typ == "Star":
             return Star(object_minmax, object_speed, screen)
         
-        if targetclass == "Asteroid":
+        if typ == "Asteroid":
             return Asteroid(object_minmax, object_speed, screen)
         
     def create_PowerUp(self, typ, powerup_size, powerup_speed, screen):
-        targetclass = typ.capitalize()
         
-        if targetclass == "Extra Health":
+        if typ == "ExtraHealth":
             return ExtraHealth(powerup_size, powerup_speed, screen)
+        
+##        if typ == "...":
+##            return ...(powerup_size, powerup_speed, screen)
     
 class Field():
     def __init__(self, object_num, screen):
@@ -52,7 +58,6 @@ class Field():
         for object in self.objects:
             object.fallmove()
         
-        print(len(self.powerups))
         if len(self.powerups) > 0:
             for powerup in self.powerups:
                 powerup.fallmove()
@@ -69,10 +74,24 @@ class Field():
                 
     def projectile_collision_check(self, projectile):
         for object in self.objects:
-##            chance = Dice()
             if object.projectile_collided(projectile):
                 object.reset()
-    
-##                if chance.roll() < 1:
-                self.powerups.append(self.factory.create_PowerUp("Extra Health", 50, 30, self.screen))
+                chance = Dice()
+                dice_roll = chance.roll()
+                
+                #Spawn ExtraHealth
+                if dice_roll < 10:
+                    self.powerups.append(self.factory.create_PowerUp("ExtraHealth", 25, 15, self.screen))
+                
+                #Spawn ...
+##                elif dice_roll >= 10 and dice_roll < 20:
+##                    self.powerups.append(self.factory.create_PowerUp("...", 25, 15, self.screen))
+                    
                 return True
+    
+    def powerup_collision_check(self, rocket):
+        for powerup in self.powerups:
+            if powerup.collided(rocket):
+                self.powerups.remove(powerup)
+        
+##End

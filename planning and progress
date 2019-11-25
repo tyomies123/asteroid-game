@@ -15,16 +15,15 @@ Progress
 [X] shooting projectiles
 [X] destroying asteroids
 [X] power up object
-
-[-] extra hp
+[X] extra hp
 
 [-] more power ups
 	- rapid fire
 	- shield?
 	- multiple projectiles
+	- piercing projectile
 [-] advanced enemy object
 	- flying saucer
 	- homing enemy
 [-] score
-[-] bonus score object
 [-] player customization
