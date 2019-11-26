@@ -7,6 +7,7 @@ from random import *
 
 from Rocket import Rocket
 from Field import Field
+from FlyingSaucer import FlyingSaucer
 
 
 #View settings
@@ -34,6 +35,7 @@ pygame.init()
 #Creating objects
 rocket = Rocket(rocket_spawn_x, rocket_spawn_y, rocket_width, rocket_height, rocket_hp, screen)
 world = Field(object_num, screen)
+ufo = FlyingSaucer(randrange(0, screen.get_width(), 10), 0, 56, 56, 10, 3, screen)
 
 #Background
 background = pygame.transform.scale(pygame.image.load(background_image), (screen_x, screen_y)).convert()
@@ -72,13 +74,20 @@ while not finish:
              
     #Render frame
     world.render()
-    for projectile in projectile_list:
+    ufo.render()            
+
+    for projectile in projectile_list[:]:
         projectile.render()
         
         if world.projectile_collision_check(projectile):
             projectile_list.remove(projectile)
             score = score + 1
             print("Score: ", score)
+            continue
+            
+        if projectile.rect.y < 0:
+            print(projectile)
+            projectile_list.remove(projectile)
             
     rocket.render()
 

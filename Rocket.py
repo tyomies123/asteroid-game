@@ -6,17 +6,21 @@ from pygame.locals import *
 from RocketProjectile import RocketProjectile
 from FallingObject import FallingObject
 
+from ExtraHealth import ExtraHealth
+from PiercingShot import PiercingShot
+
 class Rocket(pygame.sprite.Sprite):  
     def __init__(self, start_x, start_y, width, height, hp, screen):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.transform.scale(pygame.image.load('cohete_on_wf.png'), (width, height))
-        self.rect = self.image.get_rect()
-        self.rect.x = start_x
-        self.rect.y = start_y
-        
         self.width = width
         self.height = height
         self.hp = hp
+        
+        self.image = pygame.transform.scale(pygame.image.load('cohete_on_wf.png'), (self.width, self.height))
+        
+        self.rect = self.image.get_rect()
+        self.rect.x = start_x
+        self.rect.y = start_y
         
         self.rocket_plain = pygame.sprite.RenderPlain(self)
         
@@ -47,14 +51,14 @@ class Rocket(pygame.sprite.Sprite):
     
     def powerup_pickup(self, powerup):
         #Check which powerup type was picked up
-        if powerup == "ExtraHealth":
-            if self.hp == 6:
-                print("Max HP: 6")
-                time.sleep(0.33)
-            else:
-                self.hp = self.hp + 1
-                print("+1 HP! HP left: ", self.hp)
-                time.sleep(0.33)
+        
+        if type(powerup) is ExtraHealth:
+            self.hp = powerup.function(self.hp)
+
+                
+##        if type(powerup) is PiercingShot:
+##            powerup.function()
+##            pass
             
             
     def render(self):

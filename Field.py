@@ -8,7 +8,7 @@ from Asteroid import Asteroid
 from Star import Star
 
 from ExtraHealth import ExtraHealth
-from SlowTime import SlowTime
+from PiercingShot import PiercingShot
 
 from Dice import Dice
 
@@ -26,8 +26,8 @@ class FieldObjectFactory():
         if typ == "ExtraHealth":
             return ExtraHealth(powerup_size, powerup_speed, screen)
         
-##        if typ == "...":
-##            return ...(powerup_size, powerup_speed, screen)
+##        if typ == "PiercingShot":
+##            return PiercingShot(powerup_size, powerup_speed, screen)
     
 class Field():
     def __init__(self, object_num, screen):
@@ -50,7 +50,7 @@ class Field():
             #Spawn Star
             else:
                 self.objects.append(self.factory.create_FallingObject("Star", [25, 75], randrange(20, 51, 5), self.screen))
-
+        
         self.objects_plain = pygame.sprite.RenderPlain(self.objects)
         
         
@@ -80,18 +80,19 @@ class Field():
                 dice_roll = chance.roll()
                 
                 #Spawn ExtraHealth
-                if dice_roll < 10:
+                if dice_roll <= 10:
                     self.powerups.append(self.factory.create_PowerUp("ExtraHealth", 25, 15, self.screen))
                 
-                #Spawn ...
-##                elif dice_roll >= 10 and dice_roll < 20:
-##                    self.powerups.append(self.factory.create_PowerUp("...", 25, 15, self.screen))
+                #Spawn PiercingShot
+##                elif dice_roll > 10 and dice_roll <= 20:
+##                    self.powerups.append(self.factory.create_PowerUp("PiercingShot", 50, 15, self.screen))
                     
                 return True
     
     def powerup_collision_check(self, rocket):
         for powerup in self.powerups:
             if powerup.collided(rocket):
+                rocket.powerup_pickup(powerup)
                 self.powerups.remove(powerup)
         
 ##End

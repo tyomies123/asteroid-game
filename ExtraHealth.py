@@ -1,4 +1,5 @@
 import pygame
+import time
 
 from random import *
 from pygame.locals import *
@@ -8,7 +9,14 @@ class ExtraHealth(PowerUp):
     def __init__(self, size, speed, screen):
         PowerUp.__init__(self, "extra_health.png", size, speed, screen)
         
-    def collided(self, rocket):
-        if self.rect.colliderect(rocket.rect):
-            rocket.powerup_pickup("ExtraHealth")
-            return True
+    def function(self, hp):
+        #Max hp
+        if hp == 6:
+            print("Max HP: 6")
+            time.sleep(0.33)
+            return hp
+        #+1 hp
+        else:
+            print("+1 HP! HP left: ", hp + 1)
+            time.sleep(0.33)
+            return hp + 1
