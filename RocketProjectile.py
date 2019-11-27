@@ -1,10 +1,10 @@
 import pygame
 
 from pygame.locals import *
-from AttackObject import AttackObject
+from ProjectileObject import ProjectileObject
 
-class RocketProjectile(AttackObject):
+class RocketProjectile(ProjectileObject):
     def __init__(self, width, height, speed, screen, owner_x, owner_y):
-        AttackObject.__init__(self, width, height, "laser_green.png", speed, screen, owner_x, owner_y)
+        ProjectileObject.__init__(self, width, height, "laser_green.png", speed, screen, owner_x, owner_y)
 
         

@@ -35,7 +35,7 @@ pygame.init()
 #Creating objects
 rocket = Rocket(rocket_spawn_x, rocket_spawn_y, rocket_width, rocket_height, rocket_hp, screen)
 world = Field(object_num, screen)
-ufo = FlyingSaucer(randrange(0, screen.get_width(), 10), 0, 56, 56, 10, 3, screen)
+##ufo = FlyingSaucer(randrange(0, screen.get_width(), 10), 0, 56, 56, 10, 3, screen)
 
 #Background
 background = pygame.transform.scale(pygame.image.load(background_image), (screen_x, screen_y)).convert()
@@ -74,7 +74,6 @@ while not finish:
              
     #Render frame
     world.render()
-    ufo.render()            
 
     for projectile in projectile_list[:]:
         projectile.render()
@@ -86,7 +85,7 @@ while not finish:
             continue
             
         if projectile.rect.y < 0:
-            print(projectile)
+##            print(projectile)
             projectile_list.remove(projectile)
             
     rocket.render()

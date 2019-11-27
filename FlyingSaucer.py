@@ -3,6 +3,7 @@ import time
 
 from pygame.locals import *
 from random import *
+from EnemyProjectile import EnemyProjectile
 
 class FlyingSaucer(pygame.sprite.Sprite):
     def __init__(self, start_x, start_y, width, height, speed, hp, screen):
@@ -24,7 +25,7 @@ class FlyingSaucer(pygame.sprite.Sprite):
         self.going_right = True
 
     def movement(self):
-        #Turn around
+        #Turn around at edges
         if self.rect.collidepoint(self.screen.get_width(), 0):
             self.going_right = False 
         if self.rect.collidepoint(0, 0):
@@ -35,18 +36,21 @@ class FlyingSaucer(pygame.sprite.Sprite):
         if not self.going_right:
             self.rect.move_ip(0 - self.speed, 0)
     
+    def shoot(self):
+        return EnemyProjectile(5, 50, 20, self.screen, self.rect.midbottom[0], self.rect.center[1])
+    
+    def projectile_collided(self, projectile):
+        if self.rect.colliderect(projectile.rect):
+            return True
+        else:
+            return False
+        
     def hit(self):
         self.hp = self.hp - 1
-        
-        if self.hp <= 0:
-            pass
-    
-    def shoot(self):
-        pass
+        return self.hp
     
     def render(self):
         self.movement()
-        
         self.enemy_plain.draw(self.screen)
         
         
