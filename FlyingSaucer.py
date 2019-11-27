@@ -14,7 +14,7 @@ class FlyingSaucer(pygame.sprite.Sprite):
         self.hp = hp
         self.screen = screen
         
-        self.image = pygame.transform.scale(pygame.image.load('ufo.png'), (self.width, self.height))
+        self.image = pygame.transform.scale(pygame.image.load('ufo_green.png'), (self.width, self.height))
         
         self.rect = self.image.get_rect()
         self.rect.x = start_x
