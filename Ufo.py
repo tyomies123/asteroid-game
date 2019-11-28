@@ -5,7 +5,7 @@ from pygame.locals import *
 from random import *
 from EnemyProjectile import EnemyProjectile
 
-class FlyingSaucer(pygame.sprite.Sprite):
+class Ufo(pygame.sprite.Sprite):
     def __init__(self, start_x, start_y, width, height, speed, hp, screen):
         pygame.sprite.Sprite.__init__(self)
         self.width = width
@@ -14,7 +14,9 @@ class FlyingSaucer(pygame.sprite.Sprite):
         self.hp = hp
         self.screen = screen
         
-        self.image = pygame.transform.scale(pygame.image.load('ufo_green.png'), (self.width, self.height))
+        enemy_list = ['ufo_green_new.png', 'ufo_pink_new.png', 'ufo_orange_new.png']
+        
+        self.image = pygame.transform.scale(pygame.image.load(enemy_list[randint(0, len(enemy_list) - 1)]), (self.width, self.height))
         
         self.rect = self.image.get_rect()
         self.rect.x = start_x

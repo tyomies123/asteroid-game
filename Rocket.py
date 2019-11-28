@@ -16,7 +16,7 @@ class Rocket(pygame.sprite.Sprite):
         self.height = height
         self.hp = hp
         
-        self.image = pygame.transform.scale(pygame.image.load('cohete_on_wf.png'), (self.width, self.height))
+        self.image = pygame.transform.scale(pygame.image.load('rocket.png'), (self.width, self.height))
         
         self.rect = self.image.get_rect()
         self.rect.x = start_x
@@ -55,10 +55,8 @@ class Rocket(pygame.sprite.Sprite):
         if type(powerup) is ExtraHealth:
             self.hp = powerup.function(self.hp)
 
-                
 ##        if type(powerup) is PiercingShot:
 ##            powerup.function()
-##            pass
             
             
     def render(self):

@@ -7,7 +7,8 @@ from random import *
 
 from Rocket import Rocket
 from Field import Field
-from FlyingSaucer import FlyingSaucer
+
+from PiercingProjectile import PiercingProjectile
 
 
 #View settings
@@ -44,7 +45,6 @@ background = pygame.transform.scale(pygame.image.load(background_image), (screen
 clock = pygame.time.Clock()
 finish = False
 projectile_list = []
-score = 0
 
 while not finish:
     
@@ -79,13 +79,11 @@ while not finish:
         projectile.render()
         
         if world.projectile_collision_check(projectile):
-            projectile_list.remove(projectile)
-            score = score + 1
-            print("Score: ", score)
+            if type(projectile) is not PiercingProjectile:
+                projectile_list.remove(projectile)
             continue
             
         if projectile.rect.y < 0:
-##            print(projectile)
             projectile_list.remove(projectile)
             
     rocket.render()
