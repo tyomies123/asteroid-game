@@ -20,28 +20,28 @@ from Dice import Dice
 
 
 class FieldObjectFactory():
-    def create_FallingObject(self, typ, object_minmax, object_speed, screen):
+    def create_FallingObject(self, typ, minmax, speed, screen):
         
         if typ == "Star":
-            return Star(object_minmax, object_speed, screen)
+            return Star(minmax, speed, screen)
         
         if typ == "Asteroid":
-            return Asteroid(object_minmax, object_speed, screen)
+            return Asteroid(minmax, speed, screen)
     
     
-    def create_PowerUp(self, typ, powerup_size, powerup_speed, screen):
+    def create_PowerUp(self, typ, size, speed, screen):
         
         if typ == "ExtraHealth":
-            return ExtraHealth(powerup_size, powerup_speed, screen)
+            return ExtraHealth(size, speed, screen)
         
         if typ == "PiercingShot":
-            return PiercingShot(powerup_size, powerup_speed, screen)
+            return PiercingShot(size, speed, screen)
     
     
-    def create_Enemy(self, typ, start_x, start_y, width, height, speed, hp, screen):
+    def create_Enemy(self, typ, start_x, start_y, size, speed, hp, screen):
         
         if typ == "Ufo":
-            return Ufo(start_x, start_y, width, height, speed, hp, screen)
+            return Ufo(start_x, start_y, size, speed, hp, screen)
 
 
 class Field():
@@ -51,10 +51,13 @@ class Field():
         self.enemies = []
         self.enemy_projectiles = []
         
-        self.score = 0
-        
         self.screen = screen
         self.factory = FieldObjectFactory()
+        
+        self.score = 0
+        self.ufo_threshold = 20
+        self.ufo_destroyed_score = 0
+        self.n = 1
         
         asteroid_count = 0
         
@@ -70,9 +73,6 @@ class Field():
             else:
                 self.objects.append(self.factory.create_FallingObject("Star", [25, 75], randrange(20, 51, 5), self.screen))        
         
-        self.enemies.append(self.factory.create_Enemy("Ufo", randrange(0, self.screen.get_width(), 10), 0, 56, 56, 10, 3, self.screen))
-
-        
         self.objects_plain = pygame.sprite.RenderPlain(self.objects)
         
     
@@ -82,6 +82,7 @@ class Field():
             object.fallmove()
             
         self.objects_plain.draw(self.screen)
+        
         
         #Render powerups
         if len(self.powerups) > 0:
@@ -94,11 +95,13 @@ class Field():
             powerups_plain = pygame.sprite.RenderPlain(self.powerups)
             powerups_plain.draw(self.screen)
         
+        
         #Render enemies
-        for enemy in self.enemies:
-            enemy.render()
+        if len(self.enemies) > 0:
+            for enemy in self.enemies:
+                enemy.render()
 
-                
+           
         #Render enemy projectiles
         enemy_shoot_chance = Dice()
         dice_roll = enemy_shoot_chance.roll()
@@ -131,8 +134,7 @@ class Field():
             if object.projectile_collided(projectile):
                 object.reset()
                 
-                self.score = self.score + 1
-                print("Score: ", self.score)
+                self.score_checker()
                 
                 powerup_chance = Dice()
                 dice_roll = powerup_chance.roll()
@@ -155,21 +157,22 @@ class Field():
                 
                 if enemy_hp <= 0:
                     self.enemies.remove(enemy)
-                    self.score = self.score + 10
-                    print("Score: ", self.score)
+                    
+                    if self.score > self.ufo_threshold:
+                        self.ufo_destroyed_score = self.score - self.ufo_threshold - self.ufo_destroyed_score
+                    self.score_checker()
                                                         
                 return True
     
     
     #Powerup collision
     def powerup_collision_check(self, rocket):
-        for powerup in self.powerups:
+        for powerup in self.powerups[:]:
             if powerup.collided(rocket):
                 rocket.powerup_pickup(powerup)
                 self.powerups.remove(powerup)
                 
-                self.score = self.score + 1
-                print("Score: ", self.score)
+                self.score_checker()
             
             #Enemy projectile can destroy powerup
             for enemy_projectile in self.enemy_projectiles:
@@ -189,5 +192,20 @@ class Field():
             for enemy in self.enemies:
                 if enemy.rect.center[0] >= powerup.rect.left and enemy.rect.center[0] <= powerup.rect.right:
                     self.enemy_projectiles.append(enemy.shoot())
+                    
+    
+    def score_checker(self):
+        self.score = self.score + 1
+        print("Score: ", self.score)
+        
+        if self.score >= self.ufo_threshold * self.n + self.ufo_destroyed_score:
+            if len(self.enemies) > 0:
+                pass
+            else:
+                self.n = self.n + 1
+                self.enemies.append(self.factory.create_Enemy("Ufo", randrange(0, self.screen.get_width(), 10),
+                                                              0, 56, 10, 3, self.screen))
+
+            
         
 ##End

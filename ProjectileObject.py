@@ -21,7 +21,7 @@ class ProjectileObject(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.proj_plain = pygame.sprite.RenderPlain(self)
         
-        self.rect.x = self.owner_x - (self.width / 2)
+        self.rect.midbottom = self.owner_x
         self.rect.y = self.screen.get_height() - self.owner_y
         
     def rocket_collided(self, rocket):

@@ -19,8 +19,9 @@ window = pygame.display.set_mode((screen_x, screen_y))
 screen = pygame.display.get_surface()
 
 #Rocket settings
-rocket_width = 40
-rocket_height = 70
+rocket_width = 28
+rocket_height = 84
+rocket_speed = 10
 rocket_spawn_x = screen.get_width() / 2 - rocket_width / 2
 rocket_spawn_y = screen.get_height() - rocket_height
 rocket_hp = 3
@@ -34,9 +35,8 @@ pygame.init()
 
 
 #Creating objects
-rocket = Rocket(rocket_spawn_x, rocket_spawn_y, rocket_width, rocket_height, rocket_hp, screen)
+rocket = Rocket(rocket_spawn_x, rocket_spawn_y, rocket_width, rocket_height, rocket_speed, rocket_hp, screen)
 world = Field(object_num, screen)
-##ufo = FlyingSaucer(randrange(0, screen.get_width(), 10), 0, 56, 56, 10, 3, screen)
 
 #Background
 background = pygame.transform.scale(pygame.image.load(background_image), (screen_x, screen_y)).convert()
@@ -65,11 +65,14 @@ while not finish:
                 
     
     if move_command[K_LEFT]:
-        rocket.movement(-10)    #Move left
+        rocket.move_left()
   
     if move_command[K_RIGHT]:
-        rocket.movement(10)     #Move right
+        rocket.move_right()
     
+    elif not move_command[K_LEFT] and not move_command[K_RIGHT]:
+        rocket.stationary()
+        
     screen.blit(background, (0, 0))    
              
     #Render frame

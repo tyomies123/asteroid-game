@@ -10,10 +10,11 @@ from ExtraHealth import ExtraHealth
 from PiercingShot import PiercingShot
 
 class Rocket(pygame.sprite.Sprite):  
-    def __init__(self, start_x, start_y, width, height, hp, screen):
+    def __init__(self, start_x, start_y, width, height, speed, hp, screen):
         pygame.sprite.Sprite.__init__(self)
         self.width = width
         self.height = height
+        self.speed = speed
         self.hp = hp
         
         self.image = pygame.transform.scale(pygame.image.load('rocket.png'), (self.width, self.height))
@@ -26,15 +27,34 @@ class Rocket(pygame.sprite.Sprite):
         
         self.screen = screen
     
-    def movement(self, distance):
-        self.rect.move_ip(distance, 0)
+    def move_left(self):
+        self.image = pygame.transform.scale(pygame.image.load('rocket_move_left.png'), (self.width, self.height))
+        
+        self.rect.move_ip(0 - self.speed, 0)
         
         #Prevent the rocket from going offscreen
         if self.rect.x < 0:
-            self.rect.move_ip(10, 0)
+            self.rect.move_ip(self.speed, 0)
             
-        elif self.rect.x > self.screen.get_width() - self.width:
-            self.rect.move_ip(-10, 0)
+        self.rocket_plain = pygame.sprite.RenderPlain(self)
+
+        
+    def move_right(self):
+        self.image = pygame.transform.scale(pygame.image.load('rocket_move_right.png'), (self.width, self.height))
+        
+        self.rect.move_ip(self.speed, 0)
+        
+        #Prevent the rocket from going offscreen
+        if self.rect.x > self.screen.get_width() - self.width:
+            self.rect.move_ip(0 - self.speed, 0)
+            
+        self.rocket_plain = pygame.sprite.RenderPlain(self)
+        
+    def stationary(self):
+        self.image = pygame.transform.scale(pygame.image.load('rocket.png'), (self.width, self.height))
+        
+        self.rocket_plain = pygame.sprite.RenderPlain(self)
+
         
     def hit(self):
         self.hp = self.hp - 1
@@ -47,7 +67,7 @@ class Rocket(pygame.sprite.Sprite):
             sys.exit()
             
     def shoot(self):
-        return RocketProjectile(5, 50, 30, self.screen, self.rect.midtop[0], self.height)
+        return RocketProjectile(3, 70, 30, self.screen, self.rect.midtop, self.height)
     
     def powerup_pickup(self, powerup):
         #Check which powerup type was picked up
