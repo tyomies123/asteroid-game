@@ -6,7 +6,7 @@ from FallingObject import FallingObject
 
 class Asteroid(FallingObject):    
     def __init__(self, minmax, speed, screen):
-        FallingObject.__init__(self, '01murocrep512.jpg', minmax, speed, screen)
+        FallingObject.__init__(self, 'asteroid.jpg', minmax, speed, screen)
     
     def fallmove(self):
         self.rect.move_ip(0, self.speed)

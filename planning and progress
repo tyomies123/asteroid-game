@@ -16,8 +16,10 @@ Progress
 [X] destroying asteroids
 [X] power up object
 [X] extra hp
+[X] enemy object
+[X] score
 
+
+[-] sprite animation
 [-] more power ups?
-[-] enemy object
-[-] score
 [-] player customization

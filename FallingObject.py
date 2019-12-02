@@ -29,7 +29,7 @@ class FallingObject(pygame.sprite.Sprite):
 
         self.rect.x = randint(0, self.screen.get_width() - size * 2)
         self.rect.y = 0 - size
-        self.rect.topleft = (self.rect.x, self.rect.y)
+##        self.rect.topleft = (self.rect.x, self.rect.y)
         
     def rocket_collided(self, rocket):
         return False

@@ -75,7 +75,9 @@ while not finish:
         
     screen.blit(background, (0, 0))    
              
-    #Render frame
+    #Rendering the frame
+    world.check_rocket_position(rocket)
+    
     world.render()
 
     for projectile in projectile_list[:]:

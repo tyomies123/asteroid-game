@@ -75,6 +75,9 @@ class Field():
         
         self.objects_plain = pygame.sprite.RenderPlain(self.objects)
         
+##        self.enemies.append(self.factory.create_Enemy("Ufo", randrange(0, self.screen.get_width(), 10),
+##                                                              0, 56, 10, 3, self.screen))
+        
     
     def render(self):
         #Render asteroids and stars
@@ -113,6 +116,8 @@ class Field():
                 
                 if enemy_projectile.rect.y > self.screen.get_height():
                     self.enemy_projectiles.remove(enemy_projectile)
+    
+    
     
     
     #Rocket collisions
@@ -181,6 +186,8 @@ class Field():
                     self.enemy_projectiles.remove(enemy_projectile)
     
     
+    
+    
     #Check if enemy can shoot projectile
     def enemy_shoot(self, dice_roll):
         if dice_roll <= 5:
@@ -193,6 +200,32 @@ class Field():
                 if enemy.rect.center[0] >= powerup.rect.left and enemy.rect.center[0] <= powerup.rect.right:
                     self.enemy_projectiles.append(enemy.shoot())
                     
+    
+    #Tell ufo where to look
+    def check_rocket_position(self, rocket):
+        for enemy in self.enemies:
+            
+            #Look left
+            if enemy.rect.x >= rocket.rect.x + self.screen.get_width() / 3 - rocket.width * 2:
+                enemy.look_left()
+            
+##            if rocket.rect.x <= self.screen.get_width() - self.screen.get_width() * 2 / 3:
+##                if enemy.rect.x >= self.screen.get_width() / 2:
+##                    enemy.look_left()
+##                    
+            #Look right
+            elif enemy.rect.x <= rocket.rect.x - self.screen.get_width() / 3 + rocket.width * 2:
+                enemy.look_right()
+
+            
+##            elif rocket.rect.x >= self.screen.get_width() - self.screen.get_width() / 3:
+##                if enemy.rect.x <= self.screen.get_width() / 2:
+##                    enemy.look_right()
+            
+            #Look down (default sprite)
+            else:
+                enemy.look_down()
+    
     
     def score_checker(self):
         self.score = self.score + 1

@@ -13,9 +13,14 @@ class Ufo(pygame.sprite.Sprite):
         self.hp = hp
         self.screen = screen
         
-        enemy_list = ['ufo_green_new.png', 'ufo_pink_new.png', 'ufo_orange_new.png']
+        self.ufo_default_list = ['ufo_green_default.png', 'ufo_pink_default.png', 'ufo_orange_default.png']
+        self.ufo_look_right_list = ['ufo_green_look_right.png', 'ufo_pink_look_right.png', 'ufo_orange_look_right.png']
+        self.ufo_look_left_list = ['ufo_green_look_left.png', 'ufo_pink_look_left.png', 'ufo_orange_look_left.png']
         
-        self.image = pygame.transform.scale(pygame.image.load(enemy_list[randint(0, len(enemy_list) - 1)]), (self.size, self.size))
+        self.index = randint(0, len(self.ufo_default_list) - 1)
+        
+        self.image = pygame.transform.scale(pygame.image.load(self.ufo_default_list[self.index]), (self.size, self.size))
+
         
         self.rect = self.image.get_rect()
         
@@ -56,6 +61,15 @@ class Ufo(pygame.sprite.Sprite):
         self.hp = self.hp - 1
         return self.hp
     
+    def look_left(self):
+        self.image = pygame.transform.scale(pygame.image.load(self.ufo_look_left_list[self.index]), (self.size, self.size))
+        
+    def look_right(self):
+        self.image = pygame.transform.scale(pygame.image.load(self.ufo_look_right_list[self.index]), (self.size, self.size))
+        
+    def look_down(self):
+        self.image = pygame.transform.scale(pygame.image.load(self.ufo_default_list[self.index]), (self.size, self.size))
+        
     def render(self):
         self.movement()
         self.enemy_plain.draw(self.screen)
