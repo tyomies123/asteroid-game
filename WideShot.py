@@ -6,16 +6,16 @@ from pygame.locals import *
 from PowerUp import PowerUp
 from PiercingProjectile import PiercingProjectile
 
-class PiercingShot(PowerUp):
+class WideShot(PowerUp):
     def __init__(self, width, height, speed, screen):
-        PowerUp.__init__(self, "piercing_shot.png", width, height, speed, screen)
-        
+        PowerUp.__init__(self, "wide_shot.png", width, height, speed, screen)
+    
     def function(self):
         return_list = []
         for i in range(5):
-            return_list.append("PiercingProjectile")
+            return_list.append("WideProjectile")
             
         time.sleep(0.33)
-        print("Piercing shots left: ", len(return_list))
+        print("Wide shots left: ", len(return_list))
         
         return return_list

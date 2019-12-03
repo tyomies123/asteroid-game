@@ -43,8 +43,10 @@ background = pygame.transform.scale(pygame.image.load(background_image), (screen
 
 #Main loop and variables
 clock = pygame.time.Clock()
+ticks = 20
 finish = False
 projectile_list = []
+
 
 
 while not finish:
@@ -58,12 +60,12 @@ while not finish:
         if event.type == QUIT:
             finish = True
             sys.exit()
-        
-        #Create projectile
+
         if event.type == KEYDOWN:
+            
+            #Create projectile
             if event.key == K_UP or event.key == K_SPACE:
                 projectile_list.append(rocket.shoot())
-
                 
     
     if move_command[K_LEFT]:
@@ -103,6 +105,6 @@ while not finish:
     world.powerup_collision_check(rocket)
     
     #Game speed
-    clock.tick(20)
+    clock.tick(ticks)
 
 ##End

@@ -11,6 +11,7 @@ from Star import Star
 #Powerups
 from ExtraHealth import ExtraHealth
 from PiercingShot import PiercingShot
+from WideShot import WideShot
 
 #Enemy objects
 from Ufo import Ufo
@@ -29,13 +30,16 @@ class FieldObjectFactory():
             return Asteroid(minmax, speed, screen)
     
     
-    def create_PowerUp(self, typ, size, speed, screen):
+    def create_PowerUp(self, typ, width, height, speed, screen):
         
         if typ == "ExtraHealth":
-            return ExtraHealth(size, speed, screen)
+            return ExtraHealth(width, height, speed, screen)
         
         if typ == "PiercingShot":
-            return PiercingShot(size, speed, screen)
+            return PiercingShot(width, height, speed, screen)
+        
+        if typ == "WideShot":
+            return WideShot(width, height, speed, screen)
     
     
     def create_Enemy(self, typ, start_x, start_y, size, speed, hp, screen):
@@ -146,11 +150,15 @@ class Field():
                 
                 #Spawn ExtraHealth
                 if dice_roll <= 10:
-                    self.powerups.append(self.factory.create_PowerUp("ExtraHealth", 25, 10, self.screen))
+                    self.powerups.append(self.factory.create_PowerUp("ExtraHealth", 30, 29, 10, self.screen))
                 
                 #Spawn PiercingShot
                 elif dice_roll > 10 and dice_roll <= 20:
-                    self.powerups.append(self.factory.create_PowerUp("PiercingShot", 20, 10, self.screen))
+                    self.powerups.append(self.factory.create_PowerUp("PiercingShot", 16, 32, 10, self.screen))
+                    
+                #Spawn WideShot
+                elif dice_roll > 20 and dice_roll <= 30:
+                    self.powerups.append(self.factory.create_PowerUp("WideShot", 29, 18, 10, self.screen))
                     
                 return True
         

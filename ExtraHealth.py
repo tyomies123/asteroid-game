@@ -6,8 +6,8 @@ from pygame.locals import *
 from PowerUp import PowerUp
 
 class ExtraHealth(PowerUp):
-    def __init__(self, size, speed, screen):
-        PowerUp.__init__(self, "extra_health.png", size, speed, screen)
+    def __init__(self, width, height, speed, screen):
+        PowerUp.__init__(self, "extra_health.png", width, height, speed, screen)
         
     def function(self, hp):
         #Max hp
