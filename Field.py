@@ -208,20 +208,11 @@ class Field():
             #Look left
             if enemy.rect.x >= rocket.rect.x + self.screen.get_width() / 3 - rocket.width * 2:
                 enemy.look_left()
-            
-##            if rocket.rect.x <= self.screen.get_width() - self.screen.get_width() * 2 / 3:
-##                if enemy.rect.x >= self.screen.get_width() / 2:
-##                    enemy.look_left()
-##                    
+   
             #Look right
             elif enemy.rect.x <= rocket.rect.x - self.screen.get_width() / 3 + rocket.width * 2:
                 enemy.look_right()
 
-            
-##            elif rocket.rect.x >= self.screen.get_width() - self.screen.get_width() / 3:
-##                if enemy.rect.x <= self.screen.get_width() / 2:
-##                    enemy.look_right()
-            
             #Look down (default sprite)
             else:
                 enemy.look_down()

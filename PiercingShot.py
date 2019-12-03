@@ -10,4 +10,8 @@ class PiercingShot(PowerUp):
         PowerUp.__init__(self, "piercing_shot.png", size, speed, screen)
         
     def function(self):
-        pass
+        return_list = []
+        for i in range(5):
+            return_list.append("PiercingProjectile")
+        
+        return return_list

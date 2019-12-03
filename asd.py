@@ -46,6 +46,7 @@ clock = pygame.time.Clock()
 finish = False
 projectile_list = []
 
+
 while not finish:
     
     #Commands and events
@@ -62,6 +63,7 @@ while not finish:
         if event.type == KEYDOWN:
             if event.key == K_UP or event.key == K_SPACE:
                 projectile_list.append(rocket.shoot())
+
                 
     
     if move_command[K_LEFT]:
@@ -88,7 +90,7 @@ while not finish:
                 projectile_list.remove(projectile)
             continue
             
-        if projectile.rect.y < 0:
+        if projectile.rect.y < 0 - projectile.height:
             projectile_list.remove(projectile)
             
     rocket.render()

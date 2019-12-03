@@ -15,7 +15,7 @@ class ProjectileObject(pygame.sprite.Sprite):
         self.proj_image = pygame.image.load(self.image_file)
         
         self.start()
-    
+        
     def start(self):
         self.image = pygame.transform.scale(self.proj_image, (self.width, self.height))
         self.rect = self.image.get_rect()

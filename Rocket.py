@@ -4,7 +4,7 @@ import time
 
 from pygame.locals import *
 from RocketProjectile import RocketProjectile
-from FallingObject import FallingObject
+from PiercingProjectile import PiercingProjectile
 
 from ExtraHealth import ExtraHealth
 from PiercingShot import PiercingShot
@@ -17,7 +17,10 @@ class Rocket(pygame.sprite.Sprite):
         self.speed = speed
         self.hp = hp
         
-        self.image = pygame.transform.scale(pygame.image.load('rocket.png'), (self.width, self.height))
+        self.powerup_projectiles = []
+        self.piercingshot = False
+        
+        self.image = pygame.transform.scale(pygame.image.load('rocket_default.png'), (self.width, self.height))
         
         self.rect = self.image.get_rect()
         self.rect.x = start_x
@@ -28,8 +31,11 @@ class Rocket(pygame.sprite.Sprite):
         self.screen = screen
     
     def move_left(self):
-        self.image = pygame.transform.scale(pygame.image.load('rocket_move_left.png'), (self.width, self.height))
-        
+        if self.piercingshot:
+            self.image = pygame.transform.scale(pygame.image.load('rocket_piercingshot_move_left.png'), (self.width, self.height))
+        else:
+            self.image = pygame.transform.scale(pygame.image.load('rocket_move_left.png'), (self.width, self.height))
+            
         self.rect.move_ip(0 - self.speed, 0)
         
         #Prevent the rocket from going offscreen
@@ -37,11 +43,13 @@ class Rocket(pygame.sprite.Sprite):
             self.rect.move_ip(self.speed, 0)
             
         self.rocket_plain = pygame.sprite.RenderPlain(self)
-
-        
+ 
     def move_right(self):
-        self.image = pygame.transform.scale(pygame.image.load('rocket_move_right.png'), (self.width, self.height))
-        
+        if self.piercingshot:
+            self.image = pygame.transform.scale(pygame.image.load('rocket_piercingshot_move_right.png'), (self.width, self.height))
+        else:
+            self.image = pygame.transform.scale(pygame.image.load('rocket_move_right.png'), (self.width, self.height))
+
         self.rect.move_ip(self.speed, 0)
         
         #Prevent the rocket from going offscreen
@@ -51,11 +59,13 @@ class Rocket(pygame.sprite.Sprite):
         self.rocket_plain = pygame.sprite.RenderPlain(self)
         
     def stationary(self):
-        self.image = pygame.transform.scale(pygame.image.load('rocket.png'), (self.width, self.height))
-        
+        if self.piercingshot:
+            self.image = pygame.transform.scale(pygame.image.load('rocket_piercingshot_default.png'), (self.width, self.height))
+        else:
+            self.image = pygame.transform.scale(pygame.image.load('rocket_default.png'), (self.width, self.height))
+            
         self.rocket_plain = pygame.sprite.RenderPlain(self)
 
-        
     def hit(self):
         self.hp = self.hp - 1
         print("Hit! HP left: ", self.hp)
@@ -67,7 +77,19 @@ class Rocket(pygame.sprite.Sprite):
             sys.exit()
             
     def shoot(self):
-        return RocketProjectile(3, 70, 30, self.screen, self.rect.midtop, self.height)
+        #Prioritize projectiles from powerups
+        if len(self.powerup_projectiles) > 0:
+            if self.powerup_projectiles[0] == "PiercingProjectile":
+                self.powerup_projectiles.pop(0)
+                
+                if len(self.powerup_projectiles) <= 0:
+                    self.piercingshot = False
+                    
+                return PiercingProjectile(3, 70, 20, self.screen, self.rect.midtop, self.height)
+            
+        else:
+            return RocketProjectile(3, 70, 30, self.screen, self.rect.midtop, self.height)
+
     
     def powerup_pickup(self, powerup):
         #Check which powerup type was picked up
@@ -75,8 +97,10 @@ class Rocket(pygame.sprite.Sprite):
         if type(powerup) is ExtraHealth:
             self.hp = powerup.function(self.hp)
 
-##        if type(powerup) is PiercingShot:
-##            powerup.function()
+        if type(powerup) is PiercingShot:
+            self.powerup_projectiles = self.powerup_projectiles + powerup.function()
+            self.piercingshot = True
+            
             
             
     def render(self):
