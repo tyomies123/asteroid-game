@@ -16,6 +16,4 @@ class WideShot(PowerUp):
             return_list.append("WideProjectile")
             
         time.sleep(0.33)
-        print("Wide shots left: ", len(return_list))
-        
         return return_list

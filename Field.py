@@ -12,6 +12,7 @@ from Star import Star
 from ExtraHealth import ExtraHealth
 from PiercingShot import PiercingShot
 from WideShot import WideShot
+from RapidShot import RapidShot
 
 #Enemy objects
 from Ufo import Ufo
@@ -40,6 +41,9 @@ class FieldObjectFactory():
         
         if typ == "WideShot":
             return WideShot(width, height, speed, screen)
+        
+        if typ == "RapidShot":
+            return RapidShot(width, height, speed, screen)
     
     
     def create_Enemy(self, typ, start_x, start_y, size, speed, hp, screen):
@@ -58,10 +62,12 @@ class Field():
         self.screen = screen
         self.factory = FieldObjectFactory()
         
+        #Other variables
         self.score = 0
         self.ufo_threshold = 20
         self.ufo_destroyed_score = 0
         self.n = 1
+        self.powerup_picked_up = False
         
         asteroid_count = 0
         
@@ -160,6 +166,10 @@ class Field():
                 elif dice_roll > 20 and dice_roll <= 30:
                     self.powerups.append(self.factory.create_PowerUp("WideShot", 29, 18, 10, self.screen))
                     
+                #Spawn RapidShot
+                elif dice_roll > 30 and dice_roll <= 40:
+                    self.powerups.append(self.factory.create_PowerUp("RapidShot", 20, 22, 10, self.screen))
+                    
                 return True
         
         #Projectile collided with enemy  
@@ -170,6 +180,9 @@ class Field():
                 
                 if enemy_hp <= 0:
                     self.enemies.remove(enemy)
+                    
+                    for enemy_projectile in self.enemy_projectiles[:]:
+                        self.enemy_projectiles.remove(enemy_projectile)
                     
                     if self.score > self.ufo_threshold:
                         self.ufo_destroyed_score = self.score - self.ufo_threshold - self.ufo_destroyed_score
@@ -185,13 +198,18 @@ class Field():
                 rocket.powerup_pickup(powerup)
                 self.powerups.remove(powerup)
                 
+                self.powerup_picked_up = True
                 self.score_checker()
             
             #Enemy projectile can destroy powerup
             for enemy_projectile in self.enemy_projectiles:
                 if powerup.collided(enemy_projectile):
-                    self.powerups.remove(powerup)
-                    self.enemy_projectiles.remove(enemy_projectile)
+                    if self.powerup_picked_up:
+                        self.powerups.remove(powerup)
+                        self.enemy_projectiles.remove(enemy_projectile)
+                    else:
+                        self.enemy_projectiles.remove(enemy_projectile)
+
     
     
     
