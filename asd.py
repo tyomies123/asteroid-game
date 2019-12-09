@@ -17,8 +17,8 @@ screen_y = 700
 
 window = pygame.display.set_mode((screen_x, screen_y))
 screen = pygame.display.get_surface()
-
-#Rocket settings
+ 
+#Rocket settings 
 rocket_width = 28
 rocket_height = 84
 rocket_speed = 10
@@ -103,8 +103,8 @@ while not finish:
     #Collision checks
     world.rocket_collision_check(rocket)
     world.powerup_collision_check(rocket)
-    
-    #Game speed
-    clock.tick(ticks)
-
+     
+     #Game speed 
+    clock.tick(ticks * 1.25)
+ 
 ##End

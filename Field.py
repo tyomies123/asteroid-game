@@ -75,16 +75,15 @@ class Field():
             
             #Spawn asteroid + star
             if asteroid_count < 4:
-                self.objects.append(self.factory.create_FallingObject("Asteroid", [25, 100], randrange(15, 31, 5), self.screen))
-                self.objects.append(self.factory.create_FallingObject("Star", [25, 75], randrange(30, 51, 5), self.screen))
+                self.objects.append(self.factory.create_FallingObject("Asteroid", [25, 100], randrange(15, 30, 5), self.screen))
+
+                self.objects.append(self.factory.create_FallingObject("Star", [5, 15], randrange(20, 50, 5), self.screen))
                 asteroid_count = asteroid_count + 1
             
             #Spawn star
             else:
-                self.objects.append(self.factory.create_FallingObject("Star", [25, 75], randrange(20, 51, 5), self.screen))        
-        
-        self.objects_plain = pygame.sprite.RenderPlain(self.objects)
-        
+                self.objects.append(self.factory.create_FallingObject("Star", [5, 15], randrange(20, 50, 5), self.screen))
+                
 ##        self.enemies.append(self.factory.create_Enemy("Ufo", randrange(0, self.screen.get_width(), 10),
 ##                                                              0, 56, 10, 3, self.screen))
         
@@ -92,9 +91,7 @@ class Field():
     def render(self):
         #Render asteroids and stars
         for object in self.objects:
-            object.fallmove()
-            
-        self.objects_plain.draw(self.screen)
+            object.render()
         
         
         #Render powerups
@@ -156,19 +153,19 @@ class Field():
                 
                 #Spawn ExtraHealth
                 if dice_roll <= 10:
-                    self.powerups.append(self.factory.create_PowerUp("ExtraHealth", 30, 29, 10, self.screen))
+                    self.powerups.append(self.factory.create_PowerUp("ExtraHealth", 30, 30, 10, self.screen))
                 
                 #Spawn PiercingShot
                 elif dice_roll > 10 and dice_roll <= 20:
-                    self.powerups.append(self.factory.create_PowerUp("PiercingShot", 16, 32, 10, self.screen))
+                    self.powerups.append(self.factory.create_PowerUp("PiercingShot", 24, 40, 10, self.screen))
                     
                 #Spawn WideShot
                 elif dice_roll > 20 and dice_roll <= 30:
-                    self.powerups.append(self.factory.create_PowerUp("WideShot", 29, 18, 10, self.screen))
+                    self.powerups.append(self.factory.create_PowerUp("WideShot", 45, 32, 10, self.screen))
                     
                 #Spawn RapidShot
                 elif dice_roll > 30 and dice_roll <= 40:
-                    self.powerups.append(self.factory.create_PowerUp("RapidShot", 20, 22, 10, self.screen))
+                    self.powerups.append(self.factory.create_PowerUp("RapidShot", 30, 45, 10, self.screen))
                     
                 return True
         
