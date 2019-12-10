@@ -20,17 +20,13 @@ class Ufo(pygame.sprite.Sprite):
         self.index = randint(0, len(self.ufo_default_list) - 1)
         
         self.image = pygame.transform.scale(pygame.image.load(self.ufo_default_list[self.index]), (self.size, self.size))
-
-        
         self.rect = self.image.get_rect()
         
         self.rect.x = start_x
         self.rect.y = start_y
         
-        #Hitbox 25% smaller
-        self.rect.left = self.size - self.size * 0.25
-        self.rect.right = self.rect.left
-        self.rect.height = self.size - self.size * 0.25
+        #Hitbox
+        self.rect.inflate(0 - (size * 0.10), 0 - (size * 0.25))
         
         self.enemy_plain = pygame.sprite.RenderPlain(self)
         

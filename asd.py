@@ -105,6 +105,6 @@ while not finish:
     world.powerup_collision_check(rocket)
      
      #Game speed 
-    clock.tick(ticks * 1.25)
+    clock.tick(ticks)
  
 ##End
