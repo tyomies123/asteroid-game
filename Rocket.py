@@ -14,7 +14,7 @@ from WideShot import WideShot
 from RapidShot import RapidShot
 
 class Rocket(pygame.sprite.Sprite):  
-    def __init__(self, start_x, start_y, width, height, speed, hp, screen):
+    def __init__(self, start_x, start_y, width, height, speed, hp, screen, info_x):
         pygame.sprite.Sprite.__init__(self)
         self.width = width
         self.height = height
@@ -36,6 +36,7 @@ class Rocket(pygame.sprite.Sprite):
         self.rocket_plain = pygame.sprite.RenderPlain(self)
         
         self.screen = screen
+        self.info_x = info_x
     
     def move_left(self):
         
@@ -78,7 +79,7 @@ class Rocket(pygame.sprite.Sprite):
         self.rect.move_ip(self.speed, 0)
         
         #Prevent the rocket from going offscreen
-        if self.rect.x > self.screen.get_width() - self.width:
+        if self.rect.x > self.screen.get_width() - self.info_x - self.width:
             self.rect.move_ip(0 - self.speed, 0)
             
         self.rocket_plain = pygame.sprite.RenderPlain(self)

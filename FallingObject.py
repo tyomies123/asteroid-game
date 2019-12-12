@@ -4,14 +4,14 @@ from pygame.locals import *
 from random import *
 
 class FallingObject(pygame.sprite.Sprite):
-    def __init__(self, object_image, minmax, speed, screen):
+    def __init__(self, object_image, minmax, speed, screen, info_x):
         pygame.sprite.Sprite.__init__(self)
         self.minmax = minmax
         self.speed = speed
         self.screen = screen
+        self.info_x = info_x
         
         self.object_image = object_image
-        self.size = 0
         
         self.reset()
 
@@ -20,19 +20,19 @@ class FallingObject(pygame.sprite.Sprite):
         self.rect.move_ip(0, self.speed)
         if self.rect.y > self.screen.get_height():
             self.reset()
-            self.speed = randrange(20, 51, 5)
+            self.speed = randrange(20, 50, 5)
 
     def reset(self):
-        self.size = randrange(self.minmax[0], self.minmax[1], 1)
+        size = randrange(self.minmax[0], self.minmax[1], 1)
         
-        self.image = pygame.transform.scale(pygame.image.load(self.object_image), (self.size, self.size))
+        self.image = pygame.transform.scale(pygame.image.load(self.object_image), (size, size))
         self.rect = self.image.get_rect()
 
-        self.rect.x = randint(0, self.screen.get_width() - self.size * 2)
-        self.rect.y = 0 - self.size
+        self.rect.x = randint(0, self.screen.get_width() - self.info_x - size * 2)
+        self.rect.y = 0 - size
         
         #Hitbox
-        self.rect.inflate_ip(0 - self.size * 0.15, 0 - self.size * 0.25)
+        self.rect.height = size - size * 0.25
         
         self.object_plain = pygame.sprite.RenderPlain(self)
         

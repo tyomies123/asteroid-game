@@ -7,13 +7,15 @@ from random import *
 
 from Rocket import Rocket
 from Field import Field
+from InfoField import InfoField
 
 from PiercingProjectile import PiercingProjectile
 
 
 #View settings
-screen_x = 700
+screen_x = 900
 screen_y = 700
+info_x = 200
 
 window = pygame.display.set_mode((screen_x, screen_y))
 screen = pygame.display.get_surface()
@@ -22,7 +24,7 @@ screen = pygame.display.get_surface()
 rocket_width = 28
 rocket_height = 84
 rocket_speed = 10
-rocket_spawn_x = screen.get_width() / 2 - rocket_width / 2
+rocket_spawn_x = (screen.get_width() - info_x) / 2 - rocket_width / 2
 rocket_spawn_y = screen.get_height() - rocket_height
 rocket_hp = 3
 
@@ -35,8 +37,9 @@ pygame.init()
 
 
 #Creating objects
-rocket = Rocket(rocket_spawn_x, rocket_spawn_y, rocket_width, rocket_height, rocket_speed, rocket_hp, screen)
-world = Field(object_num, screen)
+rocket = Rocket(rocket_spawn_x, rocket_spawn_y, rocket_width, rocket_height, rocket_speed, rocket_hp, screen, info_x)
+world = Field(object_num, screen, info_x)
+info = InfoField(screen, screen_x, info_x)
 
 #Background
 background = pygame.transform.scale(pygame.image.load(background_image), (screen_x, screen_y)).convert()
@@ -83,6 +86,7 @@ while not finish:
     world.check_rocket_position(rocket)
     
     world.render()
+    info.render()
 
     for projectile in projectile_list[:]:
         projectile.render()

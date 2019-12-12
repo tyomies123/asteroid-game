@@ -22,44 +22,45 @@ from Dice import Dice
 
 
 class FieldObjectFactory():
-    def create_FallingObject(self, typ, minmax, speed, screen):
+    def create_FallingObject(self, typ, minmax, speed, screen, info_x):
         
         if typ == "Star":
-            return Star(minmax, speed, screen)
+            return Star(minmax, speed, screen, info_x)
         
         if typ == "Asteroid":
-            return Asteroid(minmax, speed, screen)
+            return Asteroid(minmax, speed, screen, info_x)
     
     
-    def create_PowerUp(self, typ, width, height, speed, screen):
+    def create_PowerUp(self, typ, width, height, speed, screen, info_x):
         
         if typ == "ExtraHealth":
-            return ExtraHealth(width, height, speed, screen)
+            return ExtraHealth(width, height, speed, screen, info_x)
         
         if typ == "PiercingShot":
-            return PiercingShot(width, height, speed, screen)
+            return PiercingShot(width, height, speed, screen, info_x)
         
         if typ == "WideShot":
-            return WideShot(width, height, speed, screen)
+            return WideShot(width, height, speed, screen, info_x)
         
         if typ == "RapidShot":
-            return RapidShot(width, height, speed, screen)
+            return RapidShot(width, height, speed, screen, info_x)
     
     
-    def create_Enemy(self, typ, start_x, start_y, size, speed, hp, screen):
+    def create_Enemy(self, typ, start_x, start_y, size, speed, hp, screen, info_x):
         
         if typ == "Ufo":
-            return Ufo(start_x, start_y, size, speed, hp, screen)
+            return Ufo(start_x, start_y, size, speed, hp, screen, info_x)
 
 
 class Field():
-    def __init__(self, object_num, screen):
+    def __init__(self, object_num, screen, info_x):
         self.objects = []
         self.powerups = []
         self.enemies = []
         self.enemy_projectiles = []
         
         self.screen = screen
+        self.info_x = info_x
         self.factory = FieldObjectFactory()
         
         #Other variables
@@ -75,17 +76,20 @@ class Field():
             
             #Spawn asteroid + star
             if asteroid_count < 4:
-                self.objects.append(self.factory.create_FallingObject("Asteroid", [25, 100], randrange(15, 30, 5), self.screen))
+                self.objects.append(self.factory.create_FallingObject("Asteroid", [25, 100], randrange(15, 30, 5),
+                                                                      self.screen, self.info_x))
 
-                self.objects.append(self.factory.create_FallingObject("Star", [5, 15], randrange(20, 50, 5), self.screen))
+                self.objects.append(self.factory.create_FallingObject("Star", [5, 15], randrange(20, 50, 5),
+                                                                      self.screen, self.info_x))
                 asteroid_count = asteroid_count + 1
             
             #Spawn star
             else:
-                self.objects.append(self.factory.create_FallingObject("Star", [5, 15], randrange(20, 50, 5), self.screen))
+                self.objects.append(self.factory.create_FallingObject("Star", [5, 15], randrange(20, 50, 5),
+                                                                      self.screen, self.info_x))
                 
 ##        self.enemies.append(self.factory.create_Enemy("Ufo", randrange(0, self.screen.get_width(), 10),
-##                                                              0, 56, 10, 3, self.screen))
+##                                                              0, 56, 10, 3, self.screen, self.info_x))
         
     
     def render(self):
@@ -132,6 +136,7 @@ class Field():
         for object in self.objects:
             if object.rocket_collided(rocket):
                 object.reset()
+
                 
         for enemy_projectile in self.enemy_projectiles:
             if enemy_projectile.rocket_collided(rocket):
@@ -153,19 +158,19 @@ class Field():
                 
                 #Spawn ExtraHealth
                 if dice_roll <= 10:
-                    self.powerups.append(self.factory.create_PowerUp("ExtraHealth", 30, 30, 10, self.screen))
+                    self.powerups.append(self.factory.create_PowerUp("ExtraHealth", 30, 30, 10, self.screen, self.info_x))
                 
                 #Spawn PiercingShot
                 elif dice_roll > 10 and dice_roll <= 20:
-                    self.powerups.append(self.factory.create_PowerUp("PiercingShot", 24, 40, 10, self.screen))
+                    self.powerups.append(self.factory.create_PowerUp("PiercingShot", 24, 40, 10, self.screen, self.info_x))
                     
                 #Spawn WideShot
                 elif dice_roll > 20 and dice_roll <= 30:
-                    self.powerups.append(self.factory.create_PowerUp("WideShot", 45, 32, 10, self.screen))
+                    self.powerups.append(self.factory.create_PowerUp("WideShot", 45, 32, 10, self.screen, self.info_x))
                     
                 #Spawn RapidShot
                 elif dice_roll > 30 and dice_roll <= 40:
-                    self.powerups.append(self.factory.create_PowerUp("RapidShot", 30, 45, 10, self.screen))
+                    self.powerups.append(self.factory.create_PowerUp("RapidShot", 30, 45, 10, self.screen, self.info_x))
                     
                 return True
         
@@ -176,6 +181,7 @@ class Field():
                 time.sleep(0.33)
                 
                 if enemy_hp <= 0:
+                    time.sleep(0.33)
                     self.enemies.remove(enemy)
                     
                     for enemy_projectile in self.enemy_projectiles[:]:
@@ -229,11 +235,11 @@ class Field():
         for enemy in self.enemies:
             
             #Look left
-            if enemy.rect.x >= rocket.rect.x + self.screen.get_width() / 3 - rocket.width * 2:
+            if enemy.rect.x >= rocket.rect.x + (self.screen.get_width() - self.info_x) / 3 - rocket.width * 2:
                 enemy.look_left()
    
             #Look right
-            elif enemy.rect.x <= rocket.rect.x - self.screen.get_width() / 3 + rocket.width * 2:
+            elif enemy.rect.x <= rocket.rect.x - (self.screen.get_width() - self.info_x) / 3 + rocket.width * 2:
                 enemy.look_right()
 
             #Look down (default sprite)
@@ -251,7 +257,7 @@ class Field():
             else:
                 self.n = self.n + 1
                 self.enemies.append(self.factory.create_Enemy("Ufo", randrange(0, self.screen.get_width(), 10),
-                                                              0, 56, 10, 3, self.screen))
+                                                              0, 56, 10, 3, self.screen, self.info_x))
 
             
         

@@ -6,12 +6,13 @@ from random import *
 from EnemyProjectile import EnemyProjectile
 
 class Ufo(pygame.sprite.Sprite):
-    def __init__(self, start_x, start_y, size, speed, hp, screen):
+    def __init__(self, start_x, start_y, size, speed, hp, screen, info_x):
         pygame.sprite.Sprite.__init__(self)
         self.size = size
         self.speed = speed
         self.hp = hp
         self.screen = screen
+        self.info_x = info_x
         
         self.ufo_default_list = ['ufo_green_default.png', 'ufo_pink_default.png', 'ufo_orange_default.png']
         self.ufo_look_right_list = ['ufo_green_look_right.png', 'ufo_pink_look_right.png', 'ufo_orange_look_right.png']
@@ -26,7 +27,9 @@ class Ufo(pygame.sprite.Sprite):
         self.rect.y = start_y
         
         #Hitbox
-        self.rect.inflate(0 - (size * 0.10), 0 - (size * 0.25))
+        self.rect.left = self.size - self.size * 0.25
+        self.rect.right = self.size - self.size * 0.25
+        self.rect.height = self.size - self.size * 0.25
         
         self.enemy_plain = pygame.sprite.RenderPlain(self)
         
@@ -34,7 +37,7 @@ class Ufo(pygame.sprite.Sprite):
 
     def movement(self):
         #Turn around at edges
-        if self.rect.collidepoint(self.screen.get_width(), 0):
+        if self.rect.collidepoint(self.screen.get_width() - self.info_x, 0):
             self.going_right = False 
         if self.rect.collidepoint(0, 0):
             self.going_right = True

@@ -5,8 +5,8 @@ from random import *
 from FallingObject import FallingObject
 
 class Asteroid(FallingObject):    
-    def __init__(self, minmax, speed, screen):
-        FallingObject.__init__(self, self.pick_sprite(), minmax, speed, screen)
+    def __init__(self, minmax, speed, screen, info):
+        FallingObject.__init__(self, self.pick_sprite(), minmax, speed, screen, info)
     
     def pick_sprite(self):
         self.asteroid_list = ['asteroid1.png', 'asteroid2.png', 'asteroid3.png', 'asteroid4.png']
