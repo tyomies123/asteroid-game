@@ -162,7 +162,7 @@ class Rocket(pygame.sprite.Sprite):
             
             self.wideshot = self.rapidshot = False
                     
-            self.powerup_projectiles = self.powerup_projectiles + powerup.function()
+            self.powerup_projectiles = powerup.function(self.powerup_projectiles)
             
             print("Piercing shots left: ", len(self.powerup_projectiles))
             self.piercingshot = True
@@ -174,7 +174,7 @@ class Rocket(pygame.sprite.Sprite):
                     
             self.piercingshot = self.rapidshot = False
                     
-            self.powerup_projectiles = self.powerup_projectiles + powerup.function()
+            self.powerup_projectiles = powerup.function(self.powerup_projectiles)
             
             print("Wide shots left: ", len(self.powerup_projectiles))
             self.wideshot = True
@@ -186,8 +186,8 @@ class Rocket(pygame.sprite.Sprite):
                     
             self.piercingshot = self.wideshot = False
             
-            self.powerup_projectiles = self.powerup_projectiles + powerup.function()
-            
+            self.powerup_projectiles = powerup.function(self.powerup_projectiles)
+                
             print("Rapid shots left: ", len(self.powerup_projectiles))
             self.rapidshot = True
 

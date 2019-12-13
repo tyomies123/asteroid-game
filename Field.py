@@ -68,7 +68,6 @@ class Field():
         self.ufo_threshold = 20
         self.ufo_destroyed_score = 0
         self.n = 1
-        self.powerup_picked_up = False
         
         asteroid_count = 0
         
@@ -201,17 +200,21 @@ class Field():
                 rocket.powerup_pickup(powerup)
                 self.powerups.remove(powerup)
                 
-                self.powerup_picked_up = True
                 self.score_checker()
             
             #Enemy projectile can destroy powerup
-            for enemy_projectile in self.enemy_projectiles:
+            for enemy_projectile in self.enemy_projectiles[:]:
                 if powerup.collided(enemy_projectile):
-                    if self.powerup_picked_up:
-                        self.powerups.remove(powerup)
-                        self.enemy_projectiles.remove(enemy_projectile)
+                    self.enemy_projectiles.remove(enemy_projectile)
+##                    if powerup not in self.powerups:
+##                        self.enemy_projectiles.remove(enemy_projectile)
+##                    print(powerup)
+                    print(enemy_projectile)
+                    if powerup not in self.powerups:
+                        pass
                     else:
-                        self.enemy_projectiles.remove(enemy_projectile)
+                        self.powerups.remove(powerup)
+
 
     
     
@@ -222,12 +225,15 @@ class Field():
         if dice_roll <= 5:
             for enemy in self.enemies:
                 self.enemy_projectiles.append(enemy.shoot())
+                
         
         #Enemy always targets powerups
         for powerup in self.powerups:
             for enemy in self.enemies:
-                if enemy.rect.center[0] >= powerup.rect.left and enemy.rect.center[0] <= powerup.rect.right:
-                    self.enemy_projectiles.append(enemy.shoot())
+                if enemy.rect.center[0] >= powerup.rect.left and enemy.rect.center[0] <= powerup.rect.right and powerup.rect.y > self.screen.get_height() / 4:
+                    if dice_roll <= 50:
+                            self.enemy_projectiles.append(enemy.shoot())
+
                     
     
     #Tell ufo where to look

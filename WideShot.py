@@ -10,9 +10,12 @@ class WideShot(PowerUp):
     def __init__(self, width, height, speed, screen, info_x):
         PowerUp.__init__(self, "wide_shot.png", width, height, speed, screen, info_x)
     
-    def function(self):
-        return_list = []
+    def function(self, powerup_projectiles):
+        
         for i in range(5):
-            return_list.append("WideProjectile")
+            powerup_projectiles.append("WideProjectile")
             
-        return return_list
+        while len(powerup_projectiles) > 10:
+            powerup_projectiles.remove("WideProjectile")
+            
+        return powerup_projectiles

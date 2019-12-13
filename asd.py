@@ -39,7 +39,7 @@ pygame.init()
 #Creating objects
 rocket = Rocket(rocket_spawn_x, rocket_spawn_y, rocket_width, rocket_height, rocket_speed, rocket_hp, screen, info_x)
 world = Field(object_num, screen, info_x)
-info = InfoField(screen, screen_x, info_x)
+info = InfoField(screen, screen_x, info_x, rocket)
 
 #Background
 background = pygame.transform.scale(pygame.image.load(background_image), (screen_x, screen_y)).convert()
