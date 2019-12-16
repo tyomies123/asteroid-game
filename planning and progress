@@ -22,7 +22,11 @@ Progress
 [X] wide shot
 [X] rapid shot
 [X] sprite animation
-[-] info display
+[X] info display
+[X] hp and powerup display
+[X] ufo hp display
+[-] score display
 
 [-] player customization?
 [-] boss battle?
+[-] menu screen?

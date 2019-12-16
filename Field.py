@@ -177,10 +177,9 @@ class Field():
         for enemy in self.enemies[:]:
             if enemy.projectile_collided(projectile):
                 enemy_hp = enemy.hit()
-                time.sleep(0.33)
                 
                 if enemy_hp <= 0:
-                    time.sleep(0.33)
+                    time.sleep(0.10)
                     self.enemies.remove(enemy)
                     
                     for enemy_projectile in self.enemy_projectiles[:]:

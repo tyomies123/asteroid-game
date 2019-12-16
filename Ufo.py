@@ -19,8 +19,9 @@ class Ufo(pygame.sprite.Sprite):
         self.ufo_look_left_list = ['ufo_green_look_left.png', 'ufo_pink_look_left.png', 'ufo_orange_look_left.png']
         
         self.index = randint(0, len(self.ufo_default_list) - 1)
+        self.chosen_image = self.ufo_default_list[self.index]
         
-        self.image = pygame.transform.scale(pygame.image.load(self.ufo_default_list[self.index]), (self.size, self.size))
+        self.image = pygame.transform.scale(pygame.image.load(self.chosen_image), (self.size, self.size))
         self.rect = self.image.get_rect()
         
         self.rect.x = start_x
