@@ -149,6 +149,44 @@ class InfoField():
     
     
     
+    def score_display_setup(self):
+        score_width = 120
+        score_height = 28
+        score_image = 'score.png'
+        score_x = self.screen.get_width() - self.info_x / 2 - score_width / 2
+        score_y = self.basic_unit
+        
+        return_list = []
+        
+        return_list.append(DisplayObject(score_width, score_height, score_image, score_x, score_y, self.screen))
+        return_list = return_list + self.score_number_display(score_x + score_width, score_y + score_height / 2)
+        
+        return return_list
+    
+    def score_number_display(self, parent_x, parent_y):
+        score = self.world.score
+        
+        number_width = 20
+        number_height = 28
+        n = 1
+        number_x = parent_x - number_width
+        number_y = parent_y + number_height
+        return_list = []
+        
+        if score >= 10 * n:
+            n = n + 1
+        
+        number_image = self.factory.number_picker(str(score)[len(str(score)) - 1])
+        return_list.append(DisplayObject(number_width, number_height, self.factory.number_picker(str(score)[0]), number_x - number_width * n, number_y, self.screen))
+
+        return_list.append(DisplayObject(number_width, number_height, self.factory.number_picker(str(score)[len(str(score)) - 1]), number_x, number_y, self.screen))
+
+
+        
+        return return_list
+
+
+
     #Rendering
     def render(self):
         self.boundary.render()
@@ -165,5 +203,9 @@ class InfoField():
             ufo_display = self.ufo_display_setup()
             for object in ufo_display:
                 object.render()
+                
+        score_display = self.score_display_setup()
+        for object in score_display:
+            object.render()
         
 ##End

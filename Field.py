@@ -205,10 +205,6 @@ class Field():
             for enemy_projectile in self.enemy_projectiles[:]:
                 if powerup.collided(enemy_projectile):
                     self.enemy_projectiles.remove(enemy_projectile)
-##                    if powerup not in self.powerups:
-##                        self.enemy_projectiles.remove(enemy_projectile)
-##                    print(powerup)
-                    print(enemy_projectile)
                     if powerup not in self.powerups:
                         pass
                     else:
@@ -229,9 +225,9 @@ class Field():
         #Enemy always targets powerups
         for powerup in self.powerups:
             for enemy in self.enemies:
-                if enemy.rect.center[0] >= powerup.rect.left and enemy.rect.center[0] <= powerup.rect.right and powerup.rect.y > self.screen.get_height() / 4:
+                if enemy.rect.center[0] >= powerup.rect.left and enemy.rect.center[0] <= powerup.rect.right:
                     if dice_roll <= 50:
-                            self.enemy_projectiles.append(enemy.shoot())
+                        self.enemy_projectiles.append(enemy.shoot())
 
                     
     
