@@ -108,8 +108,8 @@ class InfoField():
                 number_image = self.factory.number_picker(powerup_num)
 
         else:
-            number_width = 40
-            number_height = 20
+            number_width = 45
+            number_height = 28
             number_image = 'ten_max.png'
         
         number_x = parent_x - number_width / 2
@@ -168,21 +168,35 @@ class InfoField():
         
         number_width = 20
         number_height = 28
-        n = 1
         number_x = parent_x - number_width
         number_y = parent_y + number_height
+        
+        gap = 5
         return_list = []
-        
-        if score >= 10 * n:
-            n = n + 1
-        
-        number_image = self.factory.number_picker(str(score)[len(str(score)) - 1])
-        return_list.append(DisplayObject(number_width, number_height, self.factory.number_picker(str(score)[0]), number_x - number_width * n, number_y, self.screen))
 
-        return_list.append(DisplayObject(number_width, number_height, self.factory.number_picker(str(score)[len(str(score)) - 1]), number_x, number_y, self.screen))
+        if len(str(score)) == 1:
+            return_list.append(DisplayObject(number_width, number_height,
+                                             self.factory.number_picker(str(score)), number_x, number_y, self.screen))
+            
+        if len(str(score)) == 2:
+            return_list.append(DisplayObject(number_width, number_height,
+                                             self.factory.number_picker(str(score)[0]), number_x - number_width - gap,
+                                             number_y, self.screen))
+            return_list.append(DisplayObject(number_width, number_height,
+                                             self.factory.number_picker(str(score)[len(str(score)) - 1]), number_x,
+                                             number_y, self.screen))
 
+        if len(str(score)) == 3:
+            return_list.append(DisplayObject(number_width, number_height,
+                                             self.factory.number_picker(str(score)[0]), number_x - number_width * 2 - gap * 2,
+                                             number_y, self.screen))
+            return_list.append(DisplayObject(number_width, number_height,
+                                             self.factory.number_picker(str(score)[1]), number_x - number_width - gap,
+                                             number_y, self.screen))
+            return_list.append(DisplayObject(number_width, number_height,
+                                             self.factory.number_picker(str(score)[len(str(score)) - 1]), number_x,
+                                             number_y, self.screen))
 
-        
         return return_list
 
 
