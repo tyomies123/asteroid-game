@@ -23,16 +23,16 @@ class FallingObject(pygame.sprite.Sprite):
             self.speed = randrange(20, 50, 5)
 
     def reset(self):
-        size = randrange(self.minmax[0], self.minmax[1], 1)
+        self.size = randrange(self.minmax[0], self.minmax[1], 1)
         
-        self.image = pygame.transform.scale(pygame.image.load(self.object_image), (size, size))
+        self.image = pygame.transform.scale(pygame.image.load(self.object_image), (self.size, self.size))
         self.rect = self.image.get_rect()
 
-        self.rect.x = randint(0, self.screen.get_width() - self.info_x - size * 2)
-        self.rect.y = 0 - size
+        self.rect.x = randint(0, self.screen.get_width() - self.info_x - self.size * 2)
+        self.rect.y = 0 - self.size
         
         #Hitbox
-        self.rect.height = size - size * 0.25
+        self.rect.height = self.size - self.size * 0.25
         
         self.object_plain = pygame.sprite.RenderPlain(self)
         

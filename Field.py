@@ -18,6 +18,7 @@ from RapidShot import RapidShot
 from Ufo import Ufo
 from EnemyProjectile import EnemyProjectile
 
+from Explosion import Explosion
 from Dice import Dice
 
 
@@ -58,6 +59,7 @@ class Field():
         self.powerups = []
         self.enemies = []
         self.enemy_projectiles = []
+        self.explosions = []
         
         self.screen = screen
         self.info_x = info_x
@@ -65,10 +67,11 @@ class Field():
         
         #Other variables
         self.score = 0
+        self.counter = 20
         self.ufo_threshold = 20
         self.ufo_destroyed_score = 0
         self.n = 1
-        
+                
         asteroid_count = 0
         
         for n in range(0, object_num):
@@ -126,8 +129,16 @@ class Field():
                 
                 if enemy_projectile.rect.y > self.screen.get_height():
                     self.enemy_projectiles.remove(enemy_projectile)
-    
-    
+
+        if len(self.explosions) > 0:
+            
+            for explosion in self.explosions:
+                explosion.render_cycle()
+                
+                if explosion.over:
+                    self.explosions.remove(explosion)
+            
+            print(self.explosions)
     
     
     #Rocket collisions
@@ -139,6 +150,7 @@ class Field():
                 
         for enemy_projectile in self.enemy_projectiles:
             if enemy_projectile.rocket_collided(rocket):
+                self.explosions.append(Explosion(rocket.width * 2, rocket.rect.x, rocket.rect.y, self.screen, enemy_projectile))
                 self.enemy_projectiles.remove(enemy_projectile)
     
     
@@ -148,6 +160,7 @@ class Field():
         #Projectile collided with asteroid
         for object in self.objects:
             if object.projectile_collided(projectile):
+                self.explosions.append(Explosion(object.size, object.rect.x, object.rect.y, self.screen, projectile))
                 object.reset()
                 
                 self.score_checker()
@@ -177,6 +190,8 @@ class Field():
         for enemy in self.enemies[:]:
             if enemy.projectile_collided(projectile):
                 enemy_hp = enemy.hit()
+                self.explosions.append(Explosion(enemy.size, enemy.rect.x, enemy.rect.y, self.screen, projectile))
+
                 
                 if enemy_hp <= 0:
                     time.sleep(0.10)

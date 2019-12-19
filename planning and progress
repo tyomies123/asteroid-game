@@ -25,7 +25,8 @@ Progress
 [X] info display
 [X] hp and powerup display
 [X] ufo hp display
-[-] score display
+[X] score display
+[X] explosions
 
 [-] player customization?
 [-] boss battle?
