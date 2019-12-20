@@ -79,10 +79,14 @@ class InfoField():
             powerup_width = 60
             powerup_height = 90
             powerup_image = 'rapid_shot.png'
+        elif self.rocket.bombshot:
+            powerup_width = 84
+            powerup_height = 84
+            powerup_image = 'bomb_shot.png'
         else:
-            powerup_image = 'default_shot.png'
             powerup_width = 56
             powerup_height = 56
+            powerup_image = 'default_shot.png'
             
         powerup_x = self.screen.get_width() - self.info_x / 2 - powerup_width / 2
         powerup_y = self.screen.get_height() - self.screen.get_height() / 3 - powerup_height / 2

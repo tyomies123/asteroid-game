@@ -7,11 +7,13 @@ from RocketProjectile import RocketProjectile
 from PiercingProjectile import PiercingProjectile
 from WideProjectile import WideProjectile
 from RapidProjectile import RapidProjectile
+from BombProjectile import BombProjectile
 
 from ExtraHealth import ExtraHealth
 from PiercingShot import PiercingShot
 from WideShot import WideShot
 from RapidShot import RapidShot
+from BombShot import BombShot
 
 class Rocket(pygame.sprite.Sprite):  
     def __init__(self, start_x, start_y, width, height, speed, hp, screen, info_x):
@@ -26,6 +28,7 @@ class Rocket(pygame.sprite.Sprite):
         self.piercingshot = False
         self.wideshot = False
         self.rapidshot = False
+        self.bombshot = False
         
         self.image = pygame.transform.scale(pygame.image.load('rocket_default.png'), (self.width, self.height))
         
@@ -48,6 +51,10 @@ class Rocket(pygame.sprite.Sprite):
                                                 (self.width, self.height))
         elif self.rapidshot:
             self.image = pygame.transform.scale(pygame.image.load('rocket_rapidshot_move_left.png'),
+                                                (self.width, self.height))
+            
+        elif self.bombshot:
+            self.image = pygame.transform.scale(pygame.image.load('rocket_bombshot_move_left.png'),
                                                 (self.width, self.height))
         else:
             self.image = pygame.transform.scale(pygame.image.load('rocket_move_left.png'),
@@ -72,6 +79,9 @@ class Rocket(pygame.sprite.Sprite):
         elif self.rapidshot:
             self.image = pygame.transform.scale(pygame.image.load('rocket_rapidshot_move_right.png'),
                                                 (self.width, self.height))
+        elif self.bombshot:
+            self.image = pygame.transform.scale(pygame.image.load('rocket_bombshot_move_right.png'),
+                                                (self.width, self.height))
         else:
             self.image = pygame.transform.scale(pygame.image.load('rocket_move_right.png'),
                                                 (self.width, self.height))
@@ -94,6 +104,9 @@ class Rocket(pygame.sprite.Sprite):
                                                 (self.width, self.height))
         elif self.rapidshot:
             self.image = pygame.transform.scale(pygame.image.load('rocket_rapidshot_default.png'),
+                                                (self.width, self.height))
+        elif self.bombshot:
+            self.image = pygame.transform.scale(pygame.image.load('rocket_bombshot_default.png'),
                                                 (self.width, self.height))
         else:
             self.image = pygame.transform.scale(pygame.image.load('rocket_default.png'),
@@ -145,6 +158,16 @@ class Rocket(pygame.sprite.Sprite):
                 
                 return RapidProjectile(3, 70, 90, self.screen, self.rect.midtop, self.height)
             
+            elif self.powerup_projectiles[0] == "BombProjectile":
+                self.powerup_projectiles.remove("BombProjectile")
+                    
+                if self.powerup_projectiles.count("BombProjectile") <= 0:
+                    self.bombshot = False
+                    
+                print("Bomb shots left: ", len(self.powerup_projectiles))
+                
+                return BombProjectile(20, 20, 10, self.screen, self.rect.midtop, self.height)
+            
         else:
             return RocketProjectile(3, 70, 30, self.screen, self.rect.midtop, self.height)
 
@@ -160,7 +183,7 @@ class Rocket(pygame.sprite.Sprite):
                 if i is not "PiercingProjectile":
                     self.powerup_projectiles.remove(i)
             
-            self.wideshot = self.rapidshot = False
+            self.wideshot = self.rapidshot = self.bombshot = False
                     
             self.powerup_projectiles = powerup.function(self.powerup_projectiles)
             
@@ -172,7 +195,7 @@ class Rocket(pygame.sprite.Sprite):
                 if i is not "WideProjectile":
                     self.powerup_projectiles.remove(i)
                     
-            self.piercingshot = self.rapidshot = False
+            self.piercingshot = self.rapidshot = self.bombshot = False
                     
             self.powerup_projectiles = powerup.function(self.powerup_projectiles)
             
@@ -184,12 +207,24 @@ class Rocket(pygame.sprite.Sprite):
                 if i is not "RapidProjectile":
                     self.powerup_projectiles.remove(i)
                     
-            self.piercingshot = self.wideshot = False
+            self.piercingshot = self.wideshot = self.bombshot = False
             
             self.powerup_projectiles = powerup.function(self.powerup_projectiles)
                 
             print("Rapid shots left: ", len(self.powerup_projectiles))
             self.rapidshot = True
+        
+        if type(powerup) is BombShot:
+            for i in self.powerup_projectiles[:]:
+                if i is not "BombProjectile":
+                    self.powerup_projectiles.remove(i)
+                    
+            self.piercingshot = self.wideshot = self.rapidshot =  False
+            
+            self.powerup_projectiles = powerup.function(self.powerup_projectiles)
+                
+            print("Bomb shots left: ", len(self.powerup_projectiles))
+            self.bombshot = True
 
             
     def render(self):
