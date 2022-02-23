@@ -10,7 +10,7 @@ class Boundary(pygame.sprite.Sprite):
         self.height = height
         self.screen = screen
         
-        self.image = pygame.transform.scale(pygame.image.load('boundary.png'), (self.width, self.height))
+        self.image = pygame.transform.scale(pygame.image.load('assets/boundary.png'), (self.width, self.height))
         
         self.rect = self.image.get_rect()
         self.rect.x = start_x

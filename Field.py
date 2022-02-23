@@ -23,7 +23,7 @@ from EnemyProjectile import EnemyProjectile
 
 from Dice import Dice
 
-
+#Creating objects
 class FieldObjectFactory():
     def create_FallingObject(self, typ, minmax, speed, screen, info_x):
         
@@ -58,6 +58,7 @@ class FieldObjectFactory():
             return Ufo(start_x, start_y, size, speed, hp, screen, info_x)
 
 
+#Everything you see while playing
 class Field():
     def __init__(self, object_num, screen, info_x):
         self.objects = []
@@ -141,7 +142,7 @@ class Field():
             for explosion in self.explosions:
                 explosion.render_cycle()
                 
-                #Destroy asteroids and ufos inside explosion
+                #Destroy asteroids and ufos caught in BombProjectile explosion
                 if type(explosion.object) is BombProjectile:
                     for object in self.objects:
                         if object.projectile_collided(explosion):
@@ -162,7 +163,7 @@ class Field():
         
         
     
-    #Rocket collisions
+    #Check for collisions with player rocket
     def rocket_collision_check(self, rocket):
         for object in self.objects:
             if object.rocket_collided(rocket):
@@ -178,7 +179,7 @@ class Field():
                 self.enemy_projectiles.remove(enemy_projectile)
     
     
-    #Projectile collisions and powerup spawn
+    #Check for collisions with projectiles and spawn powerup pickups
     def projectile_collision_check(self, projectile):
         
         #Projectile collided with asteroid
@@ -186,11 +187,12 @@ class Field():
                 
             if object.projectile_collided(projectile):
                 
-                #Check if bomb
+                #Create giant explosion if BombProjectile
                 if type(projectile) is BombProjectile:
                     self.explosions.append(Explosion(300, object.rect.center[0] - 150, object.rect.center[1] - 150,
                                                          self.screen, projectile))
-                        
+
+                #Create normal explosion instead        
                 else:
                     self.explosions.append(Explosion(object.size, object.rect.x, object.rect.y,
                                                  self.screen, projectile))
@@ -201,37 +203,38 @@ class Field():
                 powerup_chance = Dice()
                 dice_roll = powerup_chance.roll()
                 
-                #Spawn ExtraHealth
+                #Spawn ExtraHealth pickup
                 if dice_roll <= 10:
                     self.powerups.append(self.factory.create_PowerUp("ExtraHealth", 30, 30, 10, self.screen, self.info_x))
                 
-                #Spawn PiercingShot
+                #Spawn PiercingShot pickup
                 elif dice_roll > 10 and dice_roll <= 20:
                     self.powerups.append(self.factory.create_PowerUp("PiercingShot", 24, 40, 10, self.screen, self.info_x))
                     
-                #Spawn WideShot
+                #Spawn WideShot pickup
                 elif dice_roll > 20 and dice_roll <= 30:
                     self.powerups.append(self.factory.create_PowerUp("WideShot", 45, 32, 10, self.screen, self.info_x))
                     
-                #Spawn RapidShot
+                #Spawn RapidShot pickup
                 elif dice_roll > 30 and dice_roll <= 40:
                     self.powerups.append(self.factory.create_PowerUp("RapidShot", 30, 45, 10, self.screen, self.info_x))
                     
-                #Spawn BombShot
+                #Spawn BombShot pickup
                 elif dice_roll > 40 and dice_roll <= 50:
                     self.powerups.append(self.factory.create_PowerUp("BombShot", 45, 45, 10, self.screen, self.info_x))
                     
                 return True
-                #Bomb explosion collided with asteroid
             
             
         #Projectile collided with enemy  
         for enemy in self.enemies[:]:
             if enemy.projectile_collided(projectile):
+                
+                #Reduce enemy hp
                 enemy_hp = enemy.hit()
                 self.explosions.append(Explosion(enemy.size, enemy.rect.x, enemy.rect.y, self.screen, projectile))
 
-                
+                #Check if enemy killed
                 if enemy_hp <= 0:
                     time.sleep(0.10)
                     self.enemies.remove(enemy)
@@ -247,9 +250,10 @@ class Field():
             
     
     
-    #Powerup collision
+    #Check for collisions with powerup pickups
     def powerup_collision_check(self, rocket):
         for powerup in self.powerups[:]:
+            #Check if picked up by player rocket
             if powerup.collided(rocket):
                 self.explosions.append(Explosion(powerup.width, rocket.rect.center[0] - rocket.width, rocket.rect.y,
                                                  self.screen, powerup))
@@ -258,7 +262,7 @@ class Field():
                 
                 self.score_checker()
             
-            #Enemy projectile can destroy powerup
+            #Enemy projectiles can destroy powerup pickups!!!
             for enemy_projectile in self.enemy_projectiles[:]:
                 if powerup.collided(enemy_projectile):
                     self.explosions.append(Explosion(powerup.width, powerup.rect.x, powerup.rect.y,
@@ -278,7 +282,7 @@ class Field():
                 self.enemy_projectiles.append(enemy.shoot())
                 
         
-        #Enemy always targets powerups
+        #Enemy always targets powerups!!!
         for powerup in self.powerups:
             for enemy in self.enemies:
                 if enemy.rect.center[0] >= powerup.rect.left and enemy.rect.center[0] <= powerup.rect.right:
@@ -286,27 +290,28 @@ class Field():
                         self.enemy_projectiles.append(enemy.shoot())
 
                     
-    #Tell ufo where to look
+    #UFO sprite's eyes always look at player rocket
     def check_rocket_position(self, rocket):
         for enemy in self.enemies:
             
-            #Look left
+            #If player rocket left from UFO, look left
             if enemy.rect.x >= rocket.rect.x + (self.screen.get_width() - self.info_x) / 3 - rocket.width * 2:
                 enemy.look_left()
    
-            #Look right
+            #If player rocket right from UFO, ook right
             elif enemy.rect.x <= rocket.rect.x - (self.screen.get_width() - self.info_x) / 3 + rocket.width * 2:
                 enemy.look_right()
 
-            #Look down (default sprite)
+            #IF player rocket right below UFO, look down (also serves as default sprite)
             else:
                 enemy.look_down()
     
-    
+    #Keeping track of player score
     def score_checker(self):
         self.score = self.score + 1
         print("Score: ", self.score)
         
+        #Creating new enemy UFO based on score and threshold
         if self.score >= self.ufo_threshold * self.n + self.ufo_destroyed_score:
             if len(self.enemies) > 0:
                 pass
@@ -315,6 +320,3 @@ class Field():
                 self.enemies.append(self.factory.create_Enemy("Ufo", randrange(0, self.screen.get_width(), 10),
                                                               0, 56, 10, 3, self.screen, self.info_x))
 
-            
-        
-##End

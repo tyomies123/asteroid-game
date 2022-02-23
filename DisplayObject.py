@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 
+#Used to display certain objects like InfoField elements
 class DisplayObject(pygame.sprite.Sprite):
     def __init__(self, width, height, sprite_image, pos_x, pos_y, screen):
         pygame.sprite.Sprite.__init__(self)

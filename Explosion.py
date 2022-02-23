@@ -15,6 +15,7 @@ from ExtraHealth import ExtraHealth
 
 from Asteroid import Asteroid
 
+#Explosions from different kinds of collisions
 class Explosion(pygame.sprite.Sprite):
     def __init__(self, size, start_x, start_y, screen, object):
         pygame.sprite.Sprite.__init__(self)
@@ -29,35 +30,36 @@ class Explosion(pygame.sprite.Sprite):
         
         self.sprites = []
     
+    #Create different explosions based on projectiles and objects involved
     def check_object_type(self):
         if type(self.object) is PiercingProjectile or type(self.object) is PiercingShot:
-            self.sprites = ['boom1_blue.png', 'boom2_blue.png', 'boom3_blue.png',
-                            'boom4_blue.png', 'boom5_blue.png']
+            self.sprites = ['assets/boom1_blue.png', 'assets/boom2_blue.png', 'assets/boom3_blue.png',
+                            'assets/boom4_blue.png', 'assets/boom5_blue.png']
             
         elif type(self.object) is WideProjectile or type(self.object) is WideShot:
-            self.sprites = ['boom1_yellow.png', 'boom2_yellow.png', 'boom3_yellow.png',
-                            'boom4_yellow.png', 'boom5_yellow.png']
+            self.sprites = ['assets/boom1_yellow.png', 'assets/boom2_yellow.png', 'assets/boom3_yellow.png',
+                            'assets/boom4_yellow.png', 'assets/boom5_yellow.png']
         
         elif type(self.object) is RapidProjectile or type(self.object) is RapidShot:
-            self.sprites = ['boom1_purple.png', 'boom2_purple.png', 'boom3_purple.png',
-                            'boom4_purple.png', 'boom5_purple.png']
+            self.sprites = ['assets/boom1_purple.png', 'assets/boom2_purple.png', 'assets/boom3_purple.png',
+                            'assets/boom4_purple.png', 'assets/boom5_purple.png']
             
         elif type(self.object) is BombProjectile or type(self.object) is BombShot:
-            self.sprites = ['boom1_orange.png', 'boom2_orange.png', 'boom3_orange.png',
-                            'boom4_orange.png', 'boom5_orange.png']
+            self.sprites = ['assets/boom1_orange.png', 'assets/boom2_orange.png', 'assets/boom3_orange.png',
+                            'assets/boom4_orange.png', 'assets/boom5_orange.png']
         
         elif type(self.object) is EnemyProjectile or type(self.object) is ExtraHealth:
-            self.sprites = ['boom1_red.png', 'boom2_red.png', 'boom3_red.png',
-                            'boom4_red.png', 'boom5_red.png']
+            self.sprites = ['assets/boom1_red.png', 'assets/boom2_red.png', 'assets/boom3_red.png',
+                            'assets/boom4_red.png', 'assets/boom5_red.png']
             
         elif type(self.object) is Asteroid:
-            self.sprites = ['boom1_asteroid.png', 'boom2_asteroid.png', 'boom3_asteroid.png',
-                            'boom4_asteroid.png', 'boom5_asteroid.png']
+            self.sprites = ['assets/boom1_asteroid.png', 'assets/boom2_asteroid.png', 'assets/boom3_asteroid.png',
+                            'assets/boom4_asteroid.png', 'assets/boom5_asteroid.png']
         else:
-            self.sprites = ['boom1_green.png', 'boom2_green.png', 'boom3_green.png',
-                            'boom4_green.png', 'boom5_green.png']
+            self.sprites = ['assets/boom1_green.png', 'assets/boom2_green.png', 'assets/boom3_green.png',
+                            'assets/boom4_green.png', 'assets/boom5_green.png']
             
-            
+    #Cycle through explosion "spritesheet"
     def render_cycle(self):
         self.check_object_type()
         

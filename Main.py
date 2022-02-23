@@ -20,7 +20,7 @@ info_x = 200
 window = pygame.display.set_mode((screen_x, screen_y))
 screen = pygame.display.get_surface()
  
-#Rocket settings 
+#Player rocket settings 
 rocket_width = 28
 rocket_height = 84
 rocket_speed = 10
@@ -28,13 +28,12 @@ rocket_spawn_x = (screen.get_width() - info_x) / 2 - rocket_width / 2
 rocket_spawn_y = screen.get_height() - rocket_height
 rocket_hp = 3
 
-#NPC settings
-background_image = 'background.png'
+#Other settings
+background_image = 'assets/background.png'
 object_num = 10
 
-
+#Initialize pygame
 pygame.init()
-
 
 #Creating objects
 rocket = Rocket(rocket_spawn_x, rocket_spawn_y, rocket_width, rocket_height, rocket_speed, rocket_hp, screen, info_x)
@@ -44,17 +43,19 @@ info = InfoField(screen, screen_x, info_x, rocket, world)
 #Background
 background = pygame.transform.scale(pygame.image.load(background_image), (screen_x, screen_y)).convert()
 
-#Main loop and variables
+
+
+###MAIN LOOP STARTS HERE###
+
+#some variables
 clock = pygame.time.Clock()
 ticks = 20
 finish = False
 projectile_list = []
 
-
-
 while not finish:
     
-    #Commands and events
+    #Checking for key commands and events
     move_command = pygame.key.get_pressed()
     
     for event in pygame.event.get():
@@ -66,17 +67,26 @@ while not finish:
 
         if event.type == KEYDOWN:
             
-            #Create projectile
+            #Player rocket shoots projectile with Up and Space keys
             if event.key == K_UP or event.key == K_SPACE:
                 projectile_list.append(rocket.shoot())
+
+            #Game quits with Esc key
+            if event.key == K_ESCAPE:
+                finish = True
+                time.sleep(1)
+                pygame.display.quit()
+                pygame.quit()
                 
-    
+    #Player rocket moves left with Left key
     if move_command[K_LEFT]:
         rocket.move_left()
-  
+    
+    #Player rocket moves right with Right key
     if move_command[K_RIGHT]:
         rocket.move_right()
     
+    #Player rocket stays in place
     elif not move_command[K_LEFT] and not move_command[K_RIGHT]:
         rocket.stationary()
         
@@ -88,15 +98,19 @@ while not finish:
     world.render()
     info.render()
 
+    #Rendering projectiles
     for projectile in projectile_list[:]:
         projectile.render()
         
+        #Projectile collision checks
         if world.projectile_collision_check(projectile):
-            if type(projectile) is not PiercingProjectile:
+            if type(projectile) != PiercingProjectile:
+                #Only remove if projectile cannot pierce multiple objects
                 projectile_list.remove(projectile)
             continue
             
         if projectile.rect.y < 0 - projectile.height:
+            #Remove projectile when out of bounds
             projectile_list.remove(projectile)
             
     rocket.render()
@@ -104,11 +118,9 @@ while not finish:
     #Update display
     pygame.display.update()
     
-    #Collision checks
+    #Other Collision checks
     world.rocket_collision_check(rocket)
     world.powerup_collision_check(rocket)
      
-     #Game speed 
+    #Game speed control
     clock.tick(ticks)
- 
-##End

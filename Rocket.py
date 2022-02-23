@@ -15,6 +15,7 @@ from WideShot import WideShot
 from RapidShot import RapidShot
 from BombShot import BombShot
 
+#Rocket controlled by player
 class Rocket(pygame.sprite.Sprite):  
     def __init__(self, start_x, start_y, width, height, speed, hp, screen, info_x):
         pygame.sprite.Sprite.__init__(self)
@@ -30,7 +31,7 @@ class Rocket(pygame.sprite.Sprite):
         self.rapidshot = False
         self.bombshot = False
         
-        self.image = pygame.transform.scale(pygame.image.load('rocket_default.png'), (self.width, self.height))
+        self.image = pygame.transform.scale(pygame.image.load('assets/rocket_default.png'), (self.width, self.height))
         
         self.rect = self.image.get_rect()
         self.rect.x = start_x
@@ -41,23 +42,24 @@ class Rocket(pygame.sprite.Sprite):
         self.screen = screen
         self.info_x = info_x
     
+    #Rocket moving left (sprite depends on current powerup)
     def move_left(self):
         
         if self.piercingshot:
-            self.image = pygame.transform.scale(pygame.image.load('rocket_piercingshot_move_left.png'),
+            self.image = pygame.transform.scale(pygame.image.load('assets/rocket_piercingshot_move_left.png'),
                                                 (self.width, self.height))
         elif self.wideshot:
-            self.image = pygame.transform.scale(pygame.image.load('rocket_wideshot_move_left.png'),
+            self.image = pygame.transform.scale(pygame.image.load('assets/rocket_wideshot_move_left.png'),
                                                 (self.width, self.height))
         elif self.rapidshot:
-            self.image = pygame.transform.scale(pygame.image.load('rocket_rapidshot_move_left.png'),
+            self.image = pygame.transform.scale(pygame.image.load('assets/rocket_rapidshot_move_left.png'),
                                                 (self.width, self.height))
             
         elif self.bombshot:
-            self.image = pygame.transform.scale(pygame.image.load('rocket_bombshot_move_left.png'),
+            self.image = pygame.transform.scale(pygame.image.load('assets/rocket_bombshot_move_left.png'),
                                                 (self.width, self.height))
         else:
-            self.image = pygame.transform.scale(pygame.image.load('rocket_move_left.png'),
+            self.image = pygame.transform.scale(pygame.image.load('assets/rocket_move_left.png'),
                                                 (self.width, self.height))
             
         self.rect.move_ip(0 - self.speed, 0)
@@ -67,23 +69,24 @@ class Rocket(pygame.sprite.Sprite):
             self.rect.move_ip(self.speed, 0)
             
         self.rocket_plain = pygame.sprite.RenderPlain(self)
- 
+    
+    #Rocket moving right (sprite depends on current powerup)
     def move_right(self):
         
         if self.piercingshot:
-            self.image = pygame.transform.scale(pygame.image.load('rocket_piercingshot_move_right.png'),
+            self.image = pygame.transform.scale(pygame.image.load('assets/rocket_piercingshot_move_right.png'),
                                                 (self.width, self.height))
         elif self.wideshot:
-            self.image = pygame.transform.scale(pygame.image.load('rocket_wideshot_move_right.png'),
+            self.image = pygame.transform.scale(pygame.image.load('assets/rocket_wideshot_move_right.png'),
                                                 (self.width, self.height))
         elif self.rapidshot:
-            self.image = pygame.transform.scale(pygame.image.load('rocket_rapidshot_move_right.png'),
+            self.image = pygame.transform.scale(pygame.image.load('assets/rocket_rapidshot_move_right.png'),
                                                 (self.width, self.height))
         elif self.bombshot:
-            self.image = pygame.transform.scale(pygame.image.load('rocket_bombshot_move_right.png'),
+            self.image = pygame.transform.scale(pygame.image.load('assets/rocket_bombshot_move_right.png'),
                                                 (self.width, self.height))
         else:
-            self.image = pygame.transform.scale(pygame.image.load('rocket_move_right.png'),
+            self.image = pygame.transform.scale(pygame.image.load('assets/rocket_move_right.png'),
                                                 (self.width, self.height))
 
         self.rect.move_ip(self.speed, 0)
@@ -93,27 +96,29 @@ class Rocket(pygame.sprite.Sprite):
             self.rect.move_ip(0 - self.speed, 0)
             
         self.rocket_plain = pygame.sprite.RenderPlain(self)
-        
+    
+    #Rocket staying put (sprite depends on current powerup)
     def stationary(self):
         
         if self.piercingshot:
-            self.image = pygame.transform.scale(pygame.image.load('rocket_piercingshot_default.png'),
+            self.image = pygame.transform.scale(pygame.image.load('assets/rocket_piercingshot_default.png'),
                                                 (self.width, self.height))
         elif self.wideshot:
-            self.image = pygame.transform.scale(pygame.image.load('rocket_wideshot_default.png'),
+            self.image = pygame.transform.scale(pygame.image.load('assets/rocket_wideshot_default.png'),
                                                 (self.width, self.height))
         elif self.rapidshot:
-            self.image = pygame.transform.scale(pygame.image.load('rocket_rapidshot_default.png'),
+            self.image = pygame.transform.scale(pygame.image.load('assets/rocket_rapidshot_default.png'),
                                                 (self.width, self.height))
         elif self.bombshot:
-            self.image = pygame.transform.scale(pygame.image.load('rocket_bombshot_default.png'),
+            self.image = pygame.transform.scale(pygame.image.load('assets/rocket_bombshot_default.png'),
                                                 (self.width, self.height))
         else:
-            self.image = pygame.transform.scale(pygame.image.load('rocket_default.png'),
+            self.image = pygame.transform.scale(pygame.image.load('assets/rocket_default.png'),
                                                 (self.width, self.height))
             
         self.rocket_plain = pygame.sprite.RenderPlain(self)
 
+    #Adjust player rocket hp when hit
     def hit(self):
         self.hp = self.hp - 1
         print("Hit! HP left: ", self.hp)
@@ -123,8 +128,10 @@ class Rocket(pygame.sprite.Sprite):
             print("Game Over!")
             time.sleep(1)
             sys.exit()
-            
+
+    #Shooting projectiles        
     def shoot(self):
+
         #Prioritize projectiles from powerups
         if len(self.powerup_projectiles) > 0:
             
@@ -171,7 +178,7 @@ class Rocket(pygame.sprite.Sprite):
         else:
             return RocketProjectile(3, 70, 30, self.screen, self.rect.midtop, self.height)
 
-    
+    #Register powerup pickups
     def powerup_pickup(self, powerup):
         #Check which powerup type was picked up
         
@@ -230,6 +237,3 @@ class Rocket(pygame.sprite.Sprite):
     def render(self):
         self.rocket_plain.draw(self.screen)
     
-
-        
-##End
